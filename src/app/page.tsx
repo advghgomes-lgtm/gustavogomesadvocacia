@@ -73,6 +73,43 @@ function IconWhatsApp(props: { className?: string }) {
   );
 }
 
+function IconMenu(props: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={props.className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </svg>
+  );
+}
+
+function IconX(props: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={props.className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 6l12 12" />
+      <path d="M18 6l-12 12" />
+    </svg>
+  );
+}
+
 /** ---------- Tipos Portal ---------- */
 type ContentPost = {
   id: string;
@@ -92,6 +129,96 @@ type DetailModalState =
       bullets: string[];
       note?: string;
     };
+
+/** ===== Menu Mobile ===== */
+function MobileMenu({
+  items,
+}: {
+  items: { label: string; id: string }[];
+}) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  function go(id: string) {
+    setOpen(false);
+    // pequena espera para fechar o overlay antes do scroll (sensação melhor no mobile)
+    setTimeout(() => scrollToId(id), 50);
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="md:hidden rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
+        aria-label="Abrir menu"
+        title="Menu"
+      >
+        <IconMenu className="h-5 w-5 text-white/85" />
+      </button>
+
+      {open && (
+        <div className="fixed inset-0 z-[200] md:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/70"
+            onClick={() => setOpen(false)}
+            aria-label="Fechar menu"
+          />
+
+          <div className="absolute right-0 top-0 h-full w-[86%] max-w-sm bg-[#0B0F1A] border-l border-white/10 shadow-[0_30px_120px_rgba(0,0,0,0.7)]">
+            <div className="flex items-center justify-between p-5 border-b border-white/10">
+              <p className="text-sm font-semibold text-white/90">Menu</p>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
+                aria-label="Fechar"
+              >
+                <IconX className="h-5 w-5 text-white/85" />
+              </button>
+            </div>
+
+            <div className="p-5">
+              <div className="space-y-2">
+                {items.map((it) => (
+                  <button
+                    key={it.id}
+                    onClick={() => go(it.id)}
+                    className="w-full text-left rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/85 hover:bg-white/10 transition"
+                  >
+                    {it.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-6 rounded-xl border border-white/10 bg-black/20 p-4">
+                <p className="text-xs text-white/60">
+                  Dica: toque em uma seção para navegar.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
 
 /** ===== Trabalhe Conosco (Footer) ===== */
 function FooterCareersForm() {
@@ -119,24 +246,16 @@ function FooterCareersForm() {
       if (!res.ok) {
         setStatus({
           ok: false,
-          message:
-            data?.error || "Não foi possível enviar agora. Tente novamente em instantes.",
+          message: data?.error || "Não foi possível enviar agora. Tente novamente em instantes.",
         });
         setLoading(false);
         return;
       }
 
-      setStatus({
-        ok: true,
-        message: "Currículo enviado com sucesso. Obrigado!",
-      });
-
+      setStatus({ ok: true, message: "Currículo enviado com sucesso. Obrigado!" });
       form.reset();
-    } catch (error) {
-      setStatus({
-        ok: false,
-        message: "Falha ao enviar. Tente novamente.",
-      });
+    } catch {
+      setStatus({ ok: false, message: "Falha ao enviar. Tente novamente." });
     }
 
     setLoading(false);
@@ -297,28 +416,24 @@ function FooterCareersModal() {
       let data: any = null;
       try {
         data = await res.json();
-      } catch (e) {
+      } catch {
         data = null;
       }
 
       if (!res.ok) {
         setStatus({
           ok: false,
-          message:
-            data?.error || "Não foi possível enviar agora. Tente novamente em instantes.",
+          message: data?.error || "Não foi possível enviar agora. Tente novamente em instantes.",
         });
         setLoading(false);
         return;
       }
 
-      setStatus({
-        ok: true,
-        message: "Currículo enviado com sucesso. Obrigado!",
-      });
+      setStatus({ ok: true, message: "Currículo enviado com sucesso. Obrigado!" });
       form.reset();
       setLoading(false);
       setTimeout(() => setOpen(false), 600);
-    } catch (e) {
+    } catch {
       setStatus({ ok: false, message: "Falha ao enviar. Tente novamente." });
       setLoading(false);
     }
@@ -343,7 +458,6 @@ function FooterCareersModal() {
             type="button"
           />
 
-          {/* ✅ Responsivo: max-h + scroll interno */}
           <div className="relative w-full max-w-2xl rounded-2xl border border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.7)] overflow-hidden max-h-[85vh]">
             <div className="flex items-start justify-between gap-4 border-b border-white/10 p-6">
               <div>
@@ -516,9 +630,7 @@ function BancarioLeadModal({ whatsappNumber }: { whatsappNumber: string }) {
     e.preventDefault();
 
     if (!name.trim() || !benefit.trim() || discounts.length === 0 || !govAccess) {
-      alert(
-        "Por favor, preencha seu nome, benefício, tipo(s) de desconto e acesso ao gov.br/Meu INSS."
-      );
+      alert("Por favor, preencha seu nome, benefício, tipo(s) de desconto e acesso ao gov.br/Meu INSS.");
       return;
     }
 
@@ -557,7 +669,6 @@ function BancarioLeadModal({ whatsappNumber }: { whatsappNumber: string }) {
             type="button"
           />
 
-          {/* ✅ Responsivo: max-h + scroll interno */}
           <div className="relative w-full max-w-2xl rounded-2xl border border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.7)] overflow-hidden max-h-[85vh]">
             <div className="flex items-start justify-between gap-4 border-b border-white/10 p-6">
               <div>
@@ -662,8 +773,7 @@ function BancarioLeadModal({ whatsappNumber }: { whatsappNumber: string }) {
                 </button>
 
                 <p className="text-[11px] text-white/50 leading-relaxed">
-                  Ao clicar, você será direcionado ao WhatsApp com uma mensagem pronta para
-                  atendimento.
+                  Ao clicar, você será direcionado ao WhatsApp com uma mensagem pronta para atendimento.
                 </p>
               </form>
             </div>
@@ -675,10 +785,19 @@ function BancarioLeadModal({ whatsappNumber }: { whatsappNumber: string }) {
 }
 
 export default function Home() {
-  // ✅ Sem useMemo para strings (mais simples)
   const whatsapp = "https://wa.me/5516997434946";
   const instagram = "https://instagram.com/gustavohgomes";
   const linkedin = "https://www.linkedin.com/in/gustavo-henrique-gomes-643893133/";
+
+  const navItems = [
+    { label: "Início", id: "inicio" },
+    { label: "O escritório", id: "escritorio" },
+    { label: "Áreas de atuação", id: "areas" },
+    { label: "Bancário", id: "bancario" },
+    { label: "Serviços", id: "servicos" },
+    { label: "Portal de conteúdo", id: "portal" },
+    { label: "Contato", id: "contato" },
+  ];
 
   const [detailModal, setDetailModal] = useState<DetailModalState>({ open: false });
   const [founderOpen, setFounderOpen] = useState(false);
@@ -810,7 +929,12 @@ export default function Home() {
         title: "Revisão e Elaboração de Contratos",
         icon: "📝",
         short: "Contratos claros, robustos e alinhados ao seu objetivo (pessoal/empresarial).",
-        bullets: ["Revisão de cláusulas e riscos", "Elaboração de contratos sob medida", "Aditivos, rescisões e negociações", "Contratos empresariais e civis"],
+        bullets: [
+          "Revisão de cláusulas e riscos",
+          "Elaboração de contratos sob medida",
+          "Aditivos, rescisões e negociações",
+          "Contratos empresariais e civis",
+        ],
       },
       {
         title: "Contencioso Estratégico",
@@ -856,11 +980,7 @@ export default function Home() {
         setPostsLoading(true);
 
         const postsRef = collection(db, "posts");
-
-        // ✅ Sem orderBy para evitar índice composto
-        // (mesma lógica do /blog, mas pegamos mais para ordenar e recortar 3)
         const q = query(postsRef, where("status", "==", "published"), limit(50));
-
         const snap = await getDocs(q);
 
         const parsed: ContentPost[] = snap.docs.map((d) => {
@@ -876,7 +996,6 @@ export default function Home() {
           };
         });
 
-        // ✅ Ordena no cliente (desc)
         parsed.sort((a, b) => {
           const at = a.publishedAt ? a.publishedAt.getTime() : 0;
           const bt = b.publishedAt ? b.publishedAt.getTime() : 0;
@@ -884,7 +1003,7 @@ export default function Home() {
         });
 
         if (alive) setPosts(parsed.slice(0, 3));
-      } catch (e) {
+      } catch {
         if (alive) setPosts([]);
       } finally {
         if (alive) setPostsLoading(false);
@@ -892,7 +1011,6 @@ export default function Home() {
     }
 
     loadPosts();
-
     return () => {
       alive = false;
     };
@@ -923,7 +1041,6 @@ export default function Home() {
     <main className="min-h-screen bg-[#0B0F1A] text-white">
       {/* Header (sticky) */}
       <header className="sticky top-0 z-50 bg-[#0B0F1A]/85 backdrop-blur border-b border-white/10">
-        {/* ✅ Responsivo: px menor no mobile + logo menor */}
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
           <button
             onClick={() => scrollToId("inicio")}
@@ -939,28 +1056,20 @@ export default function Home() {
             />
           </button>
 
+          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
-            <button onClick={() => scrollToId("inicio")} className="hover:text-white transition">
-              Início
-            </button>
-            <button onClick={() => scrollToId("escritorio")} className="hover:text-white transition">
-              O escritório
-            </button>
-            <button onClick={() => scrollToId("areas")} className="hover:text-white transition">
-              Áreas de atuação
-            </button>
-            <button onClick={() => scrollToId("servicos")} className="hover:text-white transition">
-              Serviços
-            </button>
-            <button onClick={() => scrollToId("portal")} className="hover:text-white transition">
-              Portal de conteúdo
-            </button>
-            <button onClick={() => scrollToId("contato")} className="hover:text-white transition">
-              Contato
-            </button>
+            {navItems.map((it) => (
+              <button
+                key={it.id}
+                onClick={() => scrollToId(it.id)}
+                className="hover:text-white transition"
+              >
+                {it.label}
+              </button>
+            ))}
           </nav>
 
-          {/* Social + Suporte */}
+          {/* Social + Menu mobile + CTA */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <a
               href={instagram}
@@ -972,6 +1081,7 @@ export default function Home() {
             >
               <IconInstagram className="h-5 w-5 text-white/85" />
             </a>
+
             <a
               href={linkedin}
               target="_blank"
@@ -982,6 +1092,7 @@ export default function Home() {
             >
               <IconLinkedIn className="h-5 w-5 text-white/85" />
             </a>
+
             <a
               href={whatsapp}
               className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
@@ -991,7 +1102,10 @@ export default function Home() {
               <IconWhatsApp className="h-5 w-5 text-white/85" />
             </a>
 
-            {/* ✅ some no mobile */}
+            {/* ✅ Menu mobile */}
+            <MobileMenu items={navItems} />
+
+            {/* CTA só a partir do sm */}
             <a
               href={whatsapp}
               className="hidden sm:inline-flex rounded-xl bg-white text-[#0B0F1A] px-4 py-2 text-sm font-semibold hover:bg-white/90 transition"
@@ -1003,13 +1117,17 @@ export default function Home() {
       </header>
 
       {/* Anchor */}
-      <div id="inicio" />
+      <div id="inicio" className="scroll-mt-24" />
 
-      {/* ===== BANNER DE VÍDEO (RESPONSIVO) ===== */}
-      <section className="w-full">
+      {/* ===== BANNER DE VÍDEO (FIX MOBILE: NÃO GIGANTE + NÃO CORTADO) ===== */}
+      <section className="w-full bg-black">
+        {/* 
+          - No mobile: object-contain (não corta), altura limitada (svh + max-h).
+          - No desktop: object-cover (enche bonito) e altura maior.
+        */}
         <video
           style={{ filter: "none", opacity: 1 }}
-          className="w-full h-[56vh] sm:h-[65vh] md:h-[85vh] object-cover"
+          className="w-full h-[42svh] max-h-[380px] sm:h-[55svh] sm:max-h-[520px] md:h-[80vh] md:max-h-[760px] object-contain md:object-cover"
           src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
           autoPlay
           muted
@@ -1019,7 +1137,7 @@ export default function Home() {
         />
       </section>
 
-      {/* ===== O ESCRITÓRIO (logo abaixo do vídeo) ===== */}
+      {/* ===== O ESCRITÓRIO ===== */}
       <section
         id="escritorio"
         className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-20"
@@ -1044,17 +1162,19 @@ export default function Home() {
               Advocacia estratégica • Clareza • Resultados
             </p>
 
-            <h2 className="mt-6 text-3xl md:text-4xl font-semibold leading-tight">O escritório</h2>
+            <h2 className="mt-6 text-3xl md:text-4xl font-semibold leading-tight">
+              O escritório
+            </h2>
 
             <p className="mt-4 text-white/70 leading-relaxed text-justify">
               No escritório acreditamos que o Direito deve ser claro, acessível e estratégico.
-              Atuamos de forma full service, oferecendo suporte completo em diversas áreas, com
-              forte presença no Direito Cível, Empresarial, Tributário, Bancário e Consumidor.
+              Atuamos de forma full service, oferecendo suporte completo em diversas áreas, com forte
+              presença no Direito Cível, Empresarial, Tributário, Bancário e Consumidor.
             </p>
 
             <p className="mt-4 text-white/70 leading-relaxed text-justify">
-              Aqui, cada cliente é ouvido, cada caso é analisado com profundidade e cada estratégia
-              é construída com responsabilidade e comprometimento.
+              Aqui, cada cliente é ouvido, cada caso é analisado com profundidade e cada estratégia é
+              construída com responsabilidade e comprometimento.
             </p>
 
             <p className="mt-4 text-white/70 leading-relaxed text-justify">
@@ -1097,27 +1217,28 @@ export default function Home() {
             </div>
 
             <div className="lg:col-span-8">
-              <h3 className="text-2xl md:text-3xl font-semibold leading-tight">Dr. Gustavo Gomes</h3>
+              <h3 className="text-2xl md:text-3xl font-semibold leading-tight">
+                Dr. Gustavo Gomes
+              </h3>
               <p className="mt-2 text-sm text-white/60">
                 Advogado e Administrador • Responsável pelo escritório
               </p>
 
               <p className="mt-4 text-white/90 text-justify">
                 Administrador e Advogado com sólida experiência no ambiente empresarial, o Dr.
-                Gustavo Gomes atua com foco em desafios jurídicos e estratégicos de alta
-                complexidade, buscando a excelência em cada caso. Sua trajetória na área
-                empresarial lhe confere uma visão prática e diferenciada do mercado e da realidade
-                de seus clientes.
+                Gustavo Gomes atua com foco em desafios jurídicos e estratégicos de alta complexidade,
+                buscando a excelência em cada caso. Sua trajetória na área empresarial lhe confere uma
+                visão prática e diferenciada do mercado e da realidade de seus clientes.
               </p>
 
               <p className="mt-4 text-white/90 text-justify">
-                Atualmente, o escritório vive uma intensa atuação em processos bancários,
-                especialmente em casos de{" "}
+                Atualmente, o escritório vive uma intensa atuação em processos bancários, especialmente
+                em casos de{" "}
                 <span className="text-white/90 font-semibold">
                   fraudes, consignados, Cartões RMC/RCC e descontos indevidos
                 </span>
-                , com estratégias objetivas para cessar cobranças, recuperar valores e
-                responsabilizar instituições financeiras.
+                , com estratégias objetivas para cessar cobranças, recuperar valores e responsabilizar
+                instituições financeiras.
               </p>
 
               <div className="mt-7 flex flex-col sm:flex-row gap-4">
@@ -1143,7 +1264,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== ÁREAS DE ATUAÇÃO (dinâmico) ===== */}
+      {/* ===== ÁREAS DE ATUAÇÃO ===== */}
       <section
         id="areas"
         className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-20"
@@ -1155,14 +1276,14 @@ export default function Home() {
             </h2>
 
             <p className="mt-3 text-sm text-white/60 max-w-2xl">
-              O escritório atua de forma completa e estratégica, oferecendo suporte jurídico
-              integral para pessoas físicas e jurídicas em demandas consultivas e contenciosas.
+              O escritório atua de forma completa e estratégica, oferecendo suporte jurídico integral
+              para pessoas físicas e jurídicas em demandas consultivas e contenciosas.
             </p>
           </div>
 
           <p className="hidden md:block text-sm text-white/60 max-w-md">
-            Clique em <span className="text-white/80">Saiba +</span> para ver exemplos e como
-            atuamos em cada área.
+            Clique em <span className="text-white/80">Saiba +</span> para ver exemplos e como atuamos
+            em cada área.
           </p>
         </div>
 
@@ -1207,7 +1328,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== BLOCO PREMIUM: DESCONTOS INDEVIDOS ===== */}
+      {/* ===== BLOCO BANCÁRIO ===== */}
       <section id="bancario" className="scroll-mt-24 bg-black/20 border-y border-white/10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-20">
           <div className="max-w-3xl">
@@ -1223,9 +1344,8 @@ export default function Home() {
 
             <p className="mt-4 text-white/70 leading-relaxed text-justify">
               Se você está com descontos que não reconhece (consignado, cartão RMC/RCC ou cobranças
-              abusivas), nossa atuação é voltada a cessar a cobrança, recuperar valores e
-              responsabilizar a instituição financeira. Para agilizar, clique no botão e envie seu
-              caso pronto para atendimento.
+              abusivas), nossa atuação é voltada a cessar a cobrança, recuperar valores e responsabilizar
+              a instituição financeira. Para agilizar, clique no botão e envie seu caso pronto para atendimento.
             </p>
           </div>
 
@@ -1276,12 +1396,10 @@ export default function Home() {
             </div>
 
             <div className="lg:col-span-5">
-              {/* ✅ Sticky apenas no desktop */}
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6 md:sticky md:top-24">
                 <h3 className="text-lg font-semibold">Agilize seu atendimento</h3>
                 <p className="mt-2 text-sm text-white/60 leading-relaxed text-justify">
-                  Clique no botão abaixo e preencha 4 perguntas. Em seguida, o WhatsApp abre com a
-                  mensagem pronta para análise inicial.
+                  Clique no botão abaixo e preencha 4 perguntas. Em seguida, o WhatsApp abre com a mensagem pronta para análise inicial.
                 </p>
 
                 <div className="mt-6 space-y-3">
@@ -1310,15 +1428,12 @@ export default function Home() {
                 <div className="mt-6 rounded-xl border border-white/10 bg-black/20 p-4">
                   <p className="text-sm font-semibold text-white/85">Dica rápida</p>
                   <p className="mt-2 text-xs text-white/55 leading-relaxed text-justify">
-                    Se você tiver, já separe: print do extrato do benefício, tela de
-                    empréstimos/consignações no Meu INSS e período aproximado em que começou o
-                    desconto. Isso acelera muito a análise.
+                    Se você tiver, já separe: print do extrato do benefício, tela de empréstimos/consignações no Meu INSS e período aproximado em que começou o desconto. Isso acelera muito a análise.
                   </p>
                 </div>
 
                 <p className="mt-4 text-[11px] text-white/45 leading-relaxed text-justify">
-                  Atendimento sob agendamento e conforme disponibilidade. Em urgências, avaliaremos
-                  medidas imediatas quando juridicamente cabíveis.
+                  Atendimento sob agendamento e conforme disponibilidade. Em urgências, avaliaremos medidas imediatas quando juridicamente cabíveis.
                 </p>
               </div>
             </div>
@@ -1326,14 +1441,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== SERVIÇOS (dinâmico) ===== */}
+      {/* ===== SERVIÇOS ===== */}
       <section id="servicos" className="scroll-mt-24 bg-black/20 border-y border-white/10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-20">
           <div className="flex items-end justify-between gap-6">
             <h2 className="text-3xl font-semibold">Serviços</h2>
             <p className="hidden md:block text-sm text-white/60 max-w-md">
-              Clique em <span className="text-white/80">Saiba +</span> para ver detalhes, exemplos e
-              quando faz sentido contratar.
+              Clique em <span className="text-white/80">Saiba +</span> para ver detalhes, exemplos e quando faz sentido contratar.
             </p>
           </div>
 
@@ -1375,7 +1489,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== PORTAL DE CONTEÚDO (Home) ===== */}
+      {/* ===== PORTAL ===== */}
       <section id="portal" className="scroll-mt-24 bg-black/20 border-y border-white/10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-20">
           <div className="flex items-end justify-between gap-6">
@@ -1454,8 +1568,7 @@ export default function Home() {
       >
         <h2 className="text-3xl font-semibold mb-6">Contato</h2>
         <p className="text-white/70 mb-8 max-w-2xl">
-          Entre em contato para agendar uma consulta ou enviar informações do seu caso. Atendimento
-          sob agendamento.
+          Entre em contato para agendar uma consulta ou enviar informações do seu caso. Atendimento sob agendamento.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4">
@@ -1475,11 +1588,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== FOOTER (NOVO) ===== */}
+      {/* ===== FOOTER ===== */}
       <footer className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
           <div className="grid gap-10 md:grid-cols-12">
-            {/* Marca */}
             <div className="md:col-span-5">
               <p className="text-base font-semibold">
                 Gustavo Gomes Advocacia e Consultoria Jurídica
@@ -1488,10 +1600,11 @@ export default function Home() {
                 “Cada desafio, uma oportunidade para inovar e vencer.”
               </p>
 
-              {/* Plantão Jurídico */}
               <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-5 max-w-sm">
                 <p className="text-white/85 font-semibold">Plantão Jurídico 24h</p>
-                <p className="mt-1 text-sm text-white/70">Após 18h, finais de semana e feriados</p>
+                <p className="mt-1 text-sm text-white/70">
+                  Após 18h, finais de semana e feriados
+                </p>
                 <a
                   href="tel:+5516997434946"
                   className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-[#C8A15A] text-[#0B0F1A] px-4 py-2 font-semibold hover:opacity-95 transition"
@@ -1501,13 +1614,11 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Contato */}
             <div className="md:col-span-4">
               <p className="text-sm font-semibold">Contato</p>
               <div className="mt-4 space-y-2 text-sm text-white/70 leading-relaxed">
                 <p>
-                  Avenida sete de setembro nº 1175 - Fundos - Centro - Araraquara/SP – CEP
-                  14800-390
+                  Avenida sete de setembro nº 1175 - Fundos - Centro - Araraquara/SP – CEP 14800-390
                 </p>
                 <p>+55 16 99743-4946</p>
                 <p>ghgomes@adv.oabsp.org.br</p>
@@ -1515,25 +1626,16 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Links rápidos */}
             <div className="md:col-span-3">
               <p className="text-sm font-semibold">Links rápidos</p>
               <div className="mt-4 flex flex-col gap-2 text-sm">
-                {[
-                  { t: "Início", id: "inicio" },
-                  { t: "O escritório", id: "escritorio" },
-                  { t: "Áreas de atuação", id: "areas" },
-                  { t: "Bancário", id: "bancario" },
-                  { t: "Serviços", id: "servicos" },
-                  { t: "Portal de conteúdo", id: "portal" },
-                  { t: "Agendar consulta", id: "contato" },
-                ].map((x) => (
+                {navItems.map((x) => (
                   <button
-                    key={x.t}
+                    key={x.id}
                     onClick={() => scrollToId(x.id)}
                     className="text-left text-white/70 hover:text-white transition"
                   >
-                    {x.t}
+                    {x.label}
                   </button>
                 ))}
               </div>
@@ -1570,7 +1672,6 @@ export default function Home() {
             aria-label="Fechar"
             type="button"
           />
-          {/* ✅ Responsivo: max-h + scroll interno */}
           <div className="relative w-full max-w-3xl rounded-2xl border border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.7)] overflow-hidden max-h-[85vh]">
             <div className="flex items-start justify-between gap-4 border-b border-white/10 p-6">
               <div>
@@ -1589,52 +1690,26 @@ export default function Home() {
 
             <div className="p-6 overflow-y-auto space-y-4 text-sm text-white/75 leading-relaxed">
               <p>
-                Administrador e Advogado com sólida experiência no ambiente empresarial, o Dr.
-                Gustavo Gomes atua com foco em desafios jurídicos e estratégicos de alta
-                complexidade, sempre buscando a excelência em cada caso. Sua trajetória profissional
-                envolve anos de experiência empresarial, o que lhe confere uma visão prática e
-                diferenciada do mercado e da realidade de seus clientes.
+                Administrador e Advogado com sólida experiência no ambiente empresarial, o Dr. Gustavo Gomes atua
+                com foco em desafios jurídicos e estratégicos de alta complexidade, sempre buscando a excelência em cada caso.
               </p>
 
               <p>
-                Graduado em Administração Pública pela UNESP e em Direito pela Universidade de
-                Araraquara (UNIARA), Dr. Gustavo construiu sua formação acadêmica voltada
-                especialmente ao ambiente empresarial e tributário, unindo sólido conhecimento
-                teórico à prática cotidiana da gestão de negócios.
+                Graduado em Administração Pública pela UNESP e em Direito pela Universidade de Araraquara (UNIARA),
+                Dr. Gustavo construiu sua formação acadêmica voltada especialmente ao ambiente empresarial e tributário.
               </p>
 
               <p>
-                Especialista em solucionar problemas complexos e em conduzir negociações
-                inteligentes, atua fortemente na área Cível, com ênfase em Direito Bancário, Direito
-                do Consumidor, Direito Empresarial e Tributário, sempre aplicando estratégias
-                personalizadas que aliam técnica, visão de mercado e inovação.
+                Especialista em solucionar problemas complexos e em conduzir negociações inteligentes, atua fortemente
+                na área Cível, com ênfase em Direito Bancário, Direito do Consumidor, Direito Empresarial e Tributário.
               </p>
 
               <p>
-                Dedicação, responsabilidade, empenho e comprometimento são marcas registradas de sua
-                atuação. Para o Dr. Gustavo, nenhum resultado é tão bom que não possa ser aprimorado:
-                a busca constante por evolução é o que move sua carreira.
-              </p>
-
-              <p>
-                Acredita que enfrentar novos desafios é essencial para o crescimento pessoal e
-                profissional. Analisa cada caso com profundidade, propondo soluções eficazes,
-                seguras e sustentáveis, sempre com foco na proteção dos interesses de seus clientes e
-                na construção de resultados concretos.
-              </p>
-
-              <p>
-                Sua abordagem é baseada na escuta atenta, na transparência e no atendimento
-                personalizado, características que fortalecem a relação de confiança e respeito com
-                cada cliente. A família é seu alicerce e sua maior prioridade, valores que também
-                permeiam sua vida profissional: seriedade, respeito, responsabilidade e busca
-                incessante pela excelência em tudo o que se propõe a fazer.
+                Dedicação, responsabilidade, empenho e comprometimento são marcas registradas de sua atuação.
               </p>
 
               <p className="text-white/85 font-semibold">
-                Dr. Gustavo Gomes está pronto para transformar obstáculos em oportunidades,
-                impulsionando segurança jurídica, eficiência e crescimento para pessoas e empresas
-                que confiam em seu trabalho.
+                Dr. Gustavo Gomes está pronto para transformar obstáculos em oportunidades, impulsionando segurança jurídica e resultados.
               </p>
 
               <div className="pt-3">
@@ -1660,7 +1735,6 @@ export default function Home() {
             type="button"
           />
 
-          {/* ✅ Responsivo: max-h + scroll interno */}
           <div className="relative w-full max-w-2xl rounded-2xl border border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.7)] overflow-hidden max-h-[85vh]">
             <div className="flex items-start justify-between gap-4 border-b border-white/10 p-6">
               <div>
