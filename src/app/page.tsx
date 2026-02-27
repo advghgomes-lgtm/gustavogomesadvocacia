@@ -1139,15 +1139,16 @@ useEffect(() => {
 
       {/* ===== BANNER DE VÍDEO ===== */}
       <section className="w-full">
-        <video
-          className="w-full h-[75vh] md:h-[90vh] object-cover"
-          src="/media/homepage-video.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-        />
+      <video
+  autoPlay
+  muted
+  loop
+  playsInline
+  preload="metadata"
+  className="absolute inset-0 w-full h-full object-cover"
+>
+  <source src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4" type="video/mp4" />
+</video>
       </section>
 
       {/* ===== O ESCRITÓRIO (logo abaixo do vídeo) ===== */}
