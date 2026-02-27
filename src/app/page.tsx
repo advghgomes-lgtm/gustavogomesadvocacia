@@ -1138,7 +1138,7 @@ useEffect(() => {
       <div id="inicio" />
 
       {/* ===== BANNER DE VÍDEO ===== */}
-      <section className="w-full">
+      <section className="relative h-[70vh] min-h-[520px] overflow-hidden">
       <video
   autoPlay
   muted
@@ -1149,6 +1149,11 @@ useEffect(() => {
 >
   <source src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4" type="video/mp4" />
 </video>
+ <div className="absolute inset-0 bg-black/50" />
+
+  <div className="relative z-10 flex h-full items-center justify-center">
+    
+  </div>
       </section>
 
       {/* ===== O ESCRITÓRIO (logo abaixo do vídeo) ===== */}
