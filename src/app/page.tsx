@@ -1119,23 +1119,24 @@ export default function Home() {
       {/* Anchor */}
       <div id="inicio" className="scroll-mt-24" />
 
-      {/* ===== BANNER DE VÍDEO (FIX MOBILE: NÃO GIGANTE + NÃO CORTADO) ===== */}
-      <section className="w-full bg-black">
-        {/* 
-          - No mobile: object-contain (não corta), altura limitada (svh + max-h).
-          - No desktop: object-cover (enche bonito) e altura maior.
-        */}
-        <video
-          style={{ filter: "none", opacity: 1 }}
-          className="w-full h-[42svh] max-h-[380px] sm:h-[55svh] sm:max-h-[520px] md:h-[80vh] md:max-h-[760px] object-contain md:object-cover"
-          src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        />
-      </section>
+     {/* ===== BANNER DE VÍDEO (SEM FAIXAS) ===== */}
+<section className="relative w-full overflow-hidden">
+  {/* altura controlada no mobile sem “pular” no iOS */}
+  <div className="relative h-[52svh] sm:h-[60svh] md:h-[85vh]">
+    <video
+      className="absolute inset-0 h-full w-full object-cover"
+      src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+    />
+
+    {/* (opcional) overlay leve pra dar contraste se tiver texto */}
+    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/40" />
+  </div>
+</section>
 
       {/* ===== O ESCRITÓRIO ===== */}
       <section
