@@ -1140,6 +1140,8 @@ useEffect(() => {
 {/* ===== BANNER DE VÍDEO ===== */}
 <section className="w-full">
   <video
+  style={{ filter: "none", opacity: 1 }}
+  className="w-full h-[75vh] md:h-[90vh] object-cover"
     className="w-full h-[75vh] md:h-[90vh] object-cover"
     src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
     autoPlay
