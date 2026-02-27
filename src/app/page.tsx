@@ -1137,24 +1137,19 @@ useEffect(() => {
       {/* Anchor */}
       <div id="inicio" />
 
-      {/* ===== BANNER DE VÍDEO ===== */}
-      <section className="relative h-[70vh] min-h-[520px] overflow-hidden">
-      <video
-  autoPlay
-  muted
-  loop
-  playsInline
-  preload="metadata"
-  className="absolute inset-0 w-full h-full object-cover"
->
-  <source src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4" type="video/mp4" />
-</video>
- <div className="absolute inset-0 bg-black/50" />
-
-  <div className="relative z-10 flex h-full items-center justify-center">
-    
-  </div>
-      </section>
+{/* ===== BANNER DE VÍDEO ===== */}
+<section className="w-full">
+  <video
+    className="w-full h-[75vh] md:h-[90vh] object-cover"
+    src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="metadata"
+  />
+</section>
+  
 
       {/* ===== O ESCRITÓRIO (logo abaixo do vídeo) ===== */}
       <section
