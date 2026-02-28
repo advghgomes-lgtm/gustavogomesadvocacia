@@ -1119,22 +1119,45 @@ export default function Home() {
       {/* Anchor */}
       <div id="inicio" className="scroll-mt-24" />
 
-     {/* ===== BANNER DE VÍDEO (SEM FAIXAS) ===== */}
+/* ===== BANNER RESPONSIVO CLOUDINARY ===== */
 <section className="relative w-full overflow-hidden">
-  {/* altura controlada no mobile sem “pular” no iOS */}
-  <div className="relative h-[52svh] sm:h-[60svh] md:h-[85vh]">
+  <div className="relative h-[55svh] sm:h-[60svh] md:h-[85vh]">
+
+    {/* VIDEO MOBILE */}
     <video
-      className="absolute inset-0 h-full w-full object-cover"
-      src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
+      key="mobile-video"
+      className="absolute inset-0 w-full h-full object-cover md:hidden"
       autoPlay
       muted
       loop
       playsInline
       preload="metadata"
-    />
+    >
+      <source
+        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
+        type="video/mp4"
+      />
+    </video>
 
-    {/* (opcional) overlay leve pra dar contraste se tiver texto */}
+    {/* VIDEO DESKTOP */}
+    <video
+      key="desktop-video"
+      className="absolute inset-0 w-full h-full object-cover hidden md:block"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+    >
+      <source
+        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
+        type="video/mp4"
+      />
+    </video>
+
+    {/* overlay elegante */}
     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/40" />
+
   </div>
 </section>
 
