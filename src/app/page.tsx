@@ -1044,7 +1044,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
           <button
             onClick={() => scrollToId("inicio")}
-            className="relative h-9 w-[140px] sm:h-10 sm:w-[200px] shrink-0"
+            className="relative h-12 w-[190px] sm:h-14 sm:w-[260px]"
             aria-label="Ir para o início"
           >
             <Image
