@@ -1119,10 +1119,10 @@ export default function Home() {
       {/* Anchor */}
       <div id="inicio" className="scroll-mt-24" />
 
-/* ===== BANNER RESPONSIVO CLOUDINARY ===== */
+
+{/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
 <section className="relative w-full overflow-hidden">
   <div className="relative h-[55svh] sm:h-[60svh] md:h-[85vh]">
-
     {/* VIDEO MOBILE */}
     <video
       key="mobile-video"
@@ -1154,10 +1154,6 @@ export default function Home() {
         type="video/mp4"
       />
     </video>
-
-    {/* overlay elegante */}
-    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/40" />
-
   </div>
 </section>
 
