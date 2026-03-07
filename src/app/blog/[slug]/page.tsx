@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 
@@ -9,11 +9,25 @@ import { collection, getDocs, limit, query, where, Timestamp } from "firebase/fi
 
 type Post = {
   title: string;
-  content: string; // HTML
+  content: string;
   publishedAt?: Date | null;
   coverImage?: string;
   excerpt?: string;
 };
+
+function cleanPostHtml(html: string) {
+  if (!html) return "<p></p>";
+
+  return html
+    .replace(/ style="[^"]*"/gi, "")
+    .replace(/ class="[^"]*"/gi, "")
+    .replace(/ color="[^"]*"/gi, "")
+    .replace(/ align="[^"]*"/gi, "")
+    .replace(/<font\b[^>]*>/gi, "")
+    .replace(/<\/font>/gi, "")
+    .replace(/<span\b[^>]*>/gi, "<span>")
+    .replace(/&nbsp;/gi, " ");
+}
 
 export default function BlogPostPage() {
   const params = useParams<{ slug: string }>();
@@ -74,14 +88,17 @@ export default function BlogPostPage() {
     };
   }, [slug]);
 
+  const sanitizedContent = useMemo(() => {
+    return cleanPostHtml(post?.content || "");
+  }, [post?.content]);
+
   return (
     <main className="min-h-screen bg-[#0B0F1A] text-white">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0B0F1A]/85 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0B0F1A]/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <a
             href="/"
-            className="relative h-11 w-[170px] sm:h-12 sm:w-[220px]"
+            className="relative h-12 w-[190px] sm:h-14 sm:w-[260px]"
             aria-label="Voltar para home"
           >
             <Image
@@ -111,23 +128,15 @@ export default function BlogPostPage() {
         )}
 
         {loading ? (
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-            <div className="animate-pulse space-y-4">
-              <div className="h-4 w-32 rounded bg-white/10" />
-              <div className="h-10 w-3/4 rounded bg-white/10" />
-              <div className="h-[260px] w-full rounded-2xl bg-white/10" />
-              <div className="h-4 w-full rounded bg-white/10" />
-              <div className="h-4 w-full rounded bg-white/10" />
-              <div className="h-4 w-5/6 rounded bg-white/10" />
-            </div>
+          <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
+            Carregando...
           </div>
         ) : !post ? (
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+          <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
             Post não encontrado (ou não publicado).
           </div>
         ) : (
           <article className="overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
-            {/* Hero / topo */}
             <div className="border-b border-white/10 bg-gradient-to-b from-white/[0.07] to-transparent px-5 py-8 sm:px-8 md:px-10 md:py-10">
               <p className="text-xs uppercase tracking-[0.22em] text-[#C8A15A]">
                 Portal de conteúdo
@@ -166,7 +175,6 @@ export default function BlogPostPage() {
               </div>
             </div>
 
-            {/* Imagem de capa */}
             <div className="px-5 pt-5 sm:px-8 md:px-10 md:pt-8">
               <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5">
                 {post.coverImage ? (
@@ -178,8 +186,8 @@ export default function BlogPostPage() {
                     className="h-[220px] w-full object-cover sm:h-[320px] md:h-[420px]"
                   />
                 ) : (
-                  <div className="flex h-[220px] w-full items-center justify-center bg-gradient-to-br from-white/10 to-white/5 text-center sm:h-[320px] md:h-[420px]">
-                    <div className="px-6">
+                  <div className="flex h-[220px] w-full items-center justify-center bg-gradient-to-br from-white/10 to-white/5 sm:h-[320px] md:h-[420px]">
+                    <div className="px-6 text-center">
                       <p className="text-sm uppercase tracking-[0.22em] text-[#C8A15A]">
                         Imagem de capa
                       </p>
@@ -192,41 +200,10 @@ export default function BlogPostPage() {
               </div>
             </div>
 
-            {/* Conteúdo */}
             <div className="px-5 py-8 sm:px-8 md:px-10 md:py-10">
               <div
-                className="
-                  article-content
-                  mx-auto
-                  max-w-3xl
-                  text-[17px]
-                  leading-8
-                  text-white/85
-
-                  [&_h1]:mt-10 [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:leading-tight [&_h1]:text-white
-                  [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-white
-                  [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:text-white
-
-                  [&_p]:my-5 [&_p]:text-justify [&_p]:leading-8 [&_p]:text-white/85
-                  [&_strong]:font-semibold [&_strong]:text-white
-                  [&_em]:italic
-
-                  [&_ul]:my-5 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6
-                  [&_ol]:my-5 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6
-                  [&_li]:text-white/85
-
-                  [&_a]:font-medium [&_a]:text-[#D7B06A] [&_a]:underline [&_a]:underline-offset-4
-                  [&_blockquote]:my-6 [&_blockquote]:rounded-2xl [&_blockquote]:border-l-4 [&_blockquote]:border-[#C8A15A] [&_blockquote]:bg-white/[0.04] [&_blockquote]:px-5 [&_blockquote]:py-4 [&_blockquote]:text-white/75
-
-                  [&_img]:my-8 [&_img]:h-auto [&_img]:w-full [&_img]:rounded-2xl [&_img]:border [&_img]:border-white/10
-                  [&_hr]:my-8 [&_hr]:border-white/10
-
-                  [&_table]:my-6 [&_table]:w-full [&_table]:border-collapse [&_table]:overflow-hidden
-                  [&_thead]:bg-white/5
-                  [&_th]:border [&_th]:border-white/10 [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white
-                  [&_td]:border [&_td]:border-white/10 [&_td]:px-4 [&_td]:py-3 [&_td]:text-white/80
-                "
-                dangerouslySetInnerHTML={{ __html: post.content || "<p></p>" }}
+                className="article-content mx-auto max-w-3xl"
+                dangerouslySetInnerHTML={{ __html: sanitizedContent || "<p></p>" }}
               />
             </div>
           </article>
