@@ -1113,31 +1113,29 @@ export default function Home() {
 
       {/* Anchor */}
       <div id="inicio" className="scroll-mt-24" />
-
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
 <section className="w-full bg-[#0B0F1A] overflow-hidden">
-
- {/* MOBILE */}
-<div className="block md:hidden overflow-hidden max-h-[74vh] bg-[#0B0F1A]">
-  <video
-    className="block w-full h-auto -translate-y-10"
-    autoPlay
-    muted
-    loop
-    playsInline
-    preload="metadata"
-  >
-    <source
-      src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
-      type="video/mp4"
-    />
-  </video>
-</div>
+  {/* MOBILE */}
+  <div className="relative block h-[68vh] overflow-hidden bg-[#0B0F1A] md:hidden">
+    <video
+      className="absolute left-0 top-1/2 w-full -translate-y-[52%]"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+    >
+      <source
+        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
+        type="video/mp4"
+      />
+    </video>
+  </div>
 
   {/* DESKTOP */}
   <div className="hidden md:block">
     <video
-      className="w-full h-auto"
+      className="block w-full h-auto"
       autoPlay
       muted
       loop
