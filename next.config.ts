@@ -7,6 +7,18 @@ const nextConfig: NextConfig = {
   },
 
   /**
+   * Permite carregar imagens externas do Cloudinary
+   */
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
+  },
+
+  /**
    * Fallback GARANTIDO:
    * Mesmo se o .env.local não for lido, isso injeta as variáveis no build.
    * (Você pode depois remover quando o .env.local estiver ok.)

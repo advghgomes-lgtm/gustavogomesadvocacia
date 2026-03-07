@@ -16,6 +16,8 @@ import {
 } from "firebase/firestore";
 
 const ADMIN_EMAIL = "adv.ghgomes@gmail.com";
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dlkkgxv8f";
+const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
 
 function slugify(input: string) {
   return input
@@ -25,6 +27,18 @@ function slugify(input: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)+/g, "")
     .slice(0, 80);
+}
+
+function sanitizeEditorHtml(html: string) {
+  if (!html) return "";
+
+  return html
+    .replace(/<font\b[^>]*>/gi, "")
+    .replace(/<\/font>/gi, "")
+    .replace(/ style="[^"]*"/gi, "")
+    .replace(/ class="[^"]*"/gi, "")
+    .replace(/ color="[^"]*"/gi, "")
+    .replace(/ align="[^"]*"/gi, "");
 }
 
 export default function AdminPostEditorPage() {
@@ -40,10 +54,12 @@ export default function AdminPostEditorPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
+  const [coverImage, setCoverImage] = useState("");
   const [status, setStatus] = useState<"draft" | "published">("draft");
   const [publishedAt, setPublishedAt] = useState<Date | null>(null);
 
@@ -81,14 +97,17 @@ export default function AdminPostEditorPage() {
       setTitle(String(data.title ?? ""));
       setSlug(String(data.slug ?? ""));
       setExcerpt(String(data.excerpt ?? ""));
+      setCoverImage(String(data.coverImage ?? ""));
       setStatus((data.status ?? "draft") as "draft" | "published");
       setPublishedAt(pub ? pub.toDate() : null);
 
       const html = String(data.content ?? "");
-      setContentHtml(html);
+      const cleanHtml = sanitizeEditorHtml(html);
+
+      setContentHtml(cleanHtml);
 
       requestAnimationFrame(() => {
-        if (editorRef.current) editorRef.current.innerHTML = html || "";
+        if (editorRef.current) editorRef.current.innerHTML = cleanHtml || "";
       });
 
       setLoading(false);
@@ -97,15 +116,61 @@ export default function AdminPostEditorPage() {
     if (!authLoading && isAdmin) load();
   }, [authLoading, isAdmin, id, router]);
 
+  function syncEditorHtml() {
+    if (!editorRef.current) return;
+    setContentHtml(sanitizeEditorHtml(editorRef.current.innerHTML));
+  }
+
   function exec(cmd: string, value?: string) {
     document.execCommand(cmd, false, value);
-    if (editorRef.current) setContentHtml(editorRef.current.innerHTML);
+    syncEditorHtml();
   }
 
   function insertLink() {
     const url = prompt("Cole o link (https://...):");
     if (!url) return;
     exec("createLink", url);
+  }
+
+  async function uploadCoverToCloudinary(file: File) {
+    if (!UPLOAD_PRESET) {
+      alert("Defina NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET no ambiente.");
+      return;
+    }
+
+    setUploadingCover(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", UPLOAD_PRESET);
+      formData.append("folder", "blog-covers");
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || !data?.secure_url) {
+        throw new Error(data?.error?.message || "Falha no upload da imagem.");
+      }
+
+      setCoverImage(String(data.secure_url));
+      alert("Imagem enviada com sucesso ✅");
+    } catch (e: any) {
+      alert(e?.message || "Não foi possível enviar a imagem.");
+    } finally {
+      setUploadingCover(false);
+    }
+  }
+
+  function normalizeContentBeforeSave(html: string) {
+    return sanitizeEditorHtml(html).trim();
   }
 
   async function saveBase(nextStatus?: "draft" | "published") {
@@ -115,14 +180,15 @@ export default function AdminPostEditorPage() {
     try {
       const ref = doc(db, "posts", id);
       const finalSlug = slug.trim() ? slugify(slug.trim()) : slugify(title);
-
       const finalStatus = nextStatus ?? status;
+      const normalizedContent = normalizeContentBeforeSave(contentHtml);
 
       const payload: any = {
         title: title.trim() || "Sem título",
         slug: finalSlug,
         excerpt: excerpt.trim(),
-        content: contentHtml,
+        coverImage: coverImage.trim(),
+        content: normalizedContent,
         status: finalStatus,
         updatedAt: serverTimestamp(),
         authorEmail: ADMIN_EMAIL,
@@ -138,11 +204,16 @@ export default function AdminPostEditorPage() {
 
       setSlug(finalSlug);
       setStatus(finalStatus);
+      setContentHtml(normalizedContent);
+
+      if (editorRef.current) {
+        editorRef.current.innerHTML = normalizedContent;
+      }
 
       if (finalStatus === "draft") {
         setPublishedAt(null);
-      } else {
-        if (!publishedAt) setPublishedAt(new Date()); // UI friendly
+      } else if (!publishedAt) {
+        setPublishedAt(new Date());
       }
 
       alert("Salvo ✅");
@@ -337,13 +408,60 @@ export default function AdminPostEditorPage() {
                   className="mt-2 w-full min-h-[120px] rounded-xl border border-white/10 bg-[#0B0F1A] px-4 py-3 text-sm outline-none focus:border-white/25"
                   placeholder="Resumo curto para aparecer na home e na lista do blog"
                 />
+
+                <label className="mt-5 block text-xs text-white/60">
+                  Imagem de capa
+                </label>
+
+                <div className="mt-2 flex flex-col gap-3">
+                  <input
+                    value={coverImage}
+                    onChange={(e) => setCoverImage(e.target.value)}
+                    className="w-full rounded-xl border border-white/10 bg-[#0B0F1A] px-4 py-3 text-sm outline-none focus:border-white/25"
+                    placeholder="https://..."
+                  />
+
+                  <label className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 hover:bg-white/10 transition">
+                    {uploadingCover ? "Enviando imagem..." : "Upload para Cloudinary"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                      const input = e.currentTarget;
+                      const file = input.files?.[0];
+                      if (!file) return;
+
+                      try {
+                        await uploadCoverToCloudinary(file);
+                     } finally {
+                       input.value = "";
+                      }
+                    }}
+                    />
+                  </label>
+                </div>
+
+                <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-[#0B0F1A]">
+                  {coverImage.trim() ? (
+                    <img
+                      src={coverImage}
+                      alt="Prévia da capa"
+                      className="h-48 w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-48 items-center justify-center px-4 text-center text-sm text-white/40">
+                      Pré-visualização da imagem de capa
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
                 <p className="text-sm font-semibold">Dica rápida</p>
                 <p className="mt-2 text-sm text-white/70 leading-relaxed">
-                  Use títulos, listas e negrito para facilitar a leitura. Esse
-                  editor salva em HTML.
+                  Use títulos, parágrafos, listas e negrito para facilitar a leitura.
+                  A imagem de capa aparecerá na página pública do artigo.
                 </p>
               </div>
             </div>
@@ -420,6 +538,13 @@ export default function AdminPostEditorPage() {
                   >
                     1,2,3
                   </button>
+                  <button
+                    onClick={() => exec("removeFormat")}
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    type="button"
+                  >
+                    Limpar formatação
+                  </button>
                 </div>
 
                 <div className="p-6">
@@ -427,10 +552,7 @@ export default function AdminPostEditorPage() {
                     ref={editorRef}
                     contentEditable
                     suppressContentEditableWarning
-                    onInput={() => {
-                      if (editorRef.current)
-                        setContentHtml(editorRef.current.innerHTML);
-                    }}
+                    onInput={() => syncEditorHtml()}
                     className="min-h-[420px] rounded-xl border border-white/10 bg-[#0B0F1A] p-4 text-white/90 outline-none focus:border-white/25"
                   />
 
@@ -442,8 +564,19 @@ export default function AdminPostEditorPage() {
 
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
                 <h2 className="font-semibold">Pré-visualização</h2>
+
+                {coverImage.trim() ? (
+                  <div className="mt-4 overflow-hidden rounded-2xl border border-white/10">
+                    <img
+                      src={coverImage}
+                      alt="Prévia da capa"
+                      className="h-64 w-full object-cover"
+                    />
+                  </div>
+                ) : null}
+
                 <div
-                  className="prose prose-invert mt-4 max-w-none"
+                  className="mt-4 prose prose-invert max-w-none [&_*]:text-white [&_a]:text-[#D7B06A]"
                   dangerouslySetInnerHTML={{
                     __html: contentHtml || "<p>(sem conteúdo)</p>",
                   }}

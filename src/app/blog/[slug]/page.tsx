@@ -18,15 +18,56 @@ type Post = {
 function cleanPostHtml(html: string) {
   if (!html) return "<p></p>";
 
-  return html
+  let cleaned = html
     .replace(/ style="[^"]*"/gi, "")
     .replace(/ class="[^"]*"/gi, "")
     .replace(/ color="[^"]*"/gi, "")
     .replace(/ align="[^"]*"/gi, "")
+    .replace(/ data-[^=]+="[^"]*"/gi, "")
     .replace(/<font\b[^>]*>/gi, "")
     .replace(/<\/font>/gi, "")
-    .replace(/<span\b[^>]*>/gi, "<span>")
-    .replace(/&nbsp;/gi, " ");
+    .replace(/&nbsp;/gi, " ")
+    .trim();
+
+  // remove divs vazias do editor antigo
+  cleaned = cleaned.replace(/<div>\s*(<p>\s*<\/p>\s*)+<\/div>/gi, "");
+
+  // caso clássico: <p><ol> ... </ol></p>  -> remove o <p> externo inválido
+  cleaned = cleaned.replace(/<p>\s*(<ol[\s\S]*?<\/ol>)\s*<\/p>/gi, "$1");
+
+  // transforma lista ordenada "falsa" (artigo inteiro salvo como <ol><li>...</li></ol>)
+  // em parágrafos normais
+  cleaned = cleaned.replace(/<ol[^>]*>([\s\S]*?)<\/ol>/gi, (_, inner) => {
+    const items = [...inner.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)].map((m) => m[1].trim());
+
+    if (!items.length) return "";
+
+    return items
+      .map((item: string) => {
+        let text = item.trim();
+
+        // remove <br> isolado
+        if (/^(<br\s*\/?>|\s)*$/i.test(text)) return "";
+
+        // se já vier com bloco, mantém
+        if (/^<(h1|h2|h3|h4|p|blockquote|ul|ol|img|table)\b/i.test(text)) {
+          return text;
+        }
+
+        // senão vira parágrafo
+        return `<p>${text}</p>`;
+      })
+      .filter(Boolean)
+      .join("");
+  });
+
+  // remove p vazios
+  cleaned = cleaned.replace(/<p>\s*<\/p>/gi, "");
+
+  // remove spans vazios mantendo conteúdo
+  cleaned = cleaned.replace(/<span\b[^>]*>([\s\S]*?)<\/span>/gi, "$1");
+
+  return cleaned.trim() || "<p></p>";
 }
 
 export default function BlogPostPage() {
@@ -93,7 +134,7 @@ export default function BlogPostPage() {
   }, [post?.content]);
 
   return (
-    <main className="min-h-screen bg-[#0B0F1A] text-white">
+    <main className="blog-post-page min-h-screen bg-[#0B0F1A] text-white">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0B0F1A]/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <a
@@ -210,6 +251,142 @@ export default function BlogPostPage() {
         )}
       </section>
 
-         </main>
+      <style jsx global>{`
+        .blog-post-page .article-content {
+          color: rgba(255, 255, 255, 0.88);
+          font-size: 17px;
+          line-height: 1.95;
+          word-break: break-word;
+        }
+
+        .blog-post-page .article-content * {
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+
+        .blog-post-page .article-content p,
+        .blog-post-page .article-content div,
+        .blog-post-page .article-content span,
+        .blog-post-page .article-content li {
+          color: rgba(255, 255, 255, 0.88) !important;
+          font-size: 17px !important;
+          line-height: 1.95 !important;
+          background: transparent !important;
+        }
+
+        .blog-post-page .article-content p {
+          margin: 1.25rem 0 !important;
+          text-align: justify !important;
+        }
+
+        .blog-post-page .article-content h1,
+        .blog-post-page .article-content h2,
+        .blog-post-page .article-content h3,
+        .blog-post-page .article-content h4 {
+          color: #ffffff !important;
+          font-weight: 600 !important;
+          line-height: 1.25 !important;
+          margin-top: 2rem !important;
+          margin-bottom: 1rem !important;
+          text-align: left !important;
+        }
+
+        .blog-post-page .article-content h1 {
+          font-size: 2rem !important;
+        }
+
+        .blog-post-page .article-content h2 {
+          font-size: 1.6rem !important;
+        }
+
+        .blog-post-page .article-content h3 {
+          font-size: 1.3rem !important;
+        }
+
+        .blog-post-page .article-content a {
+          color: #d7b06a !important;
+          text-decoration: underline !important;
+          text-underline-offset: 4px;
+        }
+
+        .blog-post-page .article-content strong,
+        .blog-post-page .article-content b {
+          color: #ffffff !important;
+          font-weight: 700 !important;
+        }
+
+        .blog-post-page .article-content em,
+        .blog-post-page .article-content i {
+          font-style: italic !important;
+        }
+
+        .blog-post-page .article-content ul {
+          list-style: disc !important;
+          margin: 1.25rem 0 !important;
+          padding-left: 1.5rem !important;
+        }
+
+        .blog-post-page .article-content ol {
+          list-style: decimal !important;
+          margin: 1.25rem 0 !important;
+          padding-left: 1.5rem !important;
+        }
+
+        .blog-post-page .article-content li {
+          margin: 0.45rem 0 !important;
+          text-align: justify !important;
+        }
+
+        .blog-post-page .article-content ol li::marker,
+        .blog-post-page .article-content ul li::marker {
+          color: #d7b06a !important;
+        }
+
+        .blog-post-page .article-content blockquote {
+          margin: 1.75rem 0 !important;
+          padding: 1rem 1.25rem !important;
+          border-left: 4px solid #c8a15a !important;
+          background: rgba(255, 255, 255, 0.04) !important;
+          border-radius: 16px !important;
+          color: rgba(255, 255, 255, 0.78) !important;
+        }
+
+        .blog-post-page .article-content img {
+          display: block !important;
+          width: 100% !important;
+          height: auto !important;
+          margin: 2rem auto !important;
+          border-radius: 18px !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .blog-post-page .article-content hr {
+          border: 0 !important;
+          border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+          margin: 2rem 0 !important;
+        }
+
+        .blog-post-page .article-content table {
+          width: 100% !important;
+          border-collapse: collapse !important;
+          margin: 1.5rem 0 !important;
+          display: block;
+          overflow-x: auto;
+        }
+
+        .blog-post-page .article-content th,
+        .blog-post-page .article-content td {
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          padding: 0.85rem 1rem !important;
+          text-align: left !important;
+          color: rgba(255, 255, 255, 0.88) !important;
+          background: transparent !important;
+        }
+
+        .blog-post-page .article-content thead {
+          background: rgba(255, 255, 255, 0.05) !important;
+        }
+      `}</style>
+    </main>
   );
 }
