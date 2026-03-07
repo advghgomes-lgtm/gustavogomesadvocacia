@@ -1128,7 +1128,7 @@ export default function Home() {
       preload="metadata"
     >
       <source
-        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
+        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239558/home-mobile_wlqd3w.mp4"
         type="video/mp4"
       />
     </video>
