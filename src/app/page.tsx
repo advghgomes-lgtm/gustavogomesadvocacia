@@ -1117,21 +1117,21 @@ export default function Home() {
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
 <section className="w-full bg-[#0B0F1A] overflow-hidden">
   {/* MOBILE */}
-  <div className="block md:hidden">
-    <video
-      className="w-full h-auto"
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="metadata"
-    >
-      <source
-        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
-        type="video/mp4"
-      />
-    </video>
-  </div>
+  <div className="block md:hidden overflow-hidden h-[70vh]">
+  <video
+    className="w-full h-full object-cover object-center"
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="metadata"
+  >
+    <source
+      src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
+      type="video/mp4"
+    />
+  </video>
+</div>
 
   {/* DESKTOP */}
   <div className="hidden md:block">
