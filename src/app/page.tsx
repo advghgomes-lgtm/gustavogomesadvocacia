@@ -1553,7 +1553,7 @@ export default function Home() {
               posts.map((p) => (
                 <a
                   key={p.id}
-                  href={`/portal/${p.slug}`}
+                  href={`/blog/${p.slug}`}
                   className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/7 transition block"
                 >
                   <p className="text-xs text-white/55">
