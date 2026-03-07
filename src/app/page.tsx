@@ -172,17 +172,17 @@ function MobileMenu({
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[200] bg-[#0B0F1A] md:hidden">
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/80"
+        <div className="fixed inset-0 z-[300] md:hidden">
+          <div
+            className="absolute inset-0 bg-[#0B0F1A]/95"
             onClick={() => setOpen(false)}
-            aria-label="Fechar menu"
+            aria-hidden="true"
           />
 
-          <div className="absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.85)]">
+          <aside className="absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.9)]">
             <div className="flex items-center justify-between border-b border-white/10 p-5">
-              <p className="text-sm font-semibold text-white/90">Menu</p>
+              <p className="text-sm font-semibold text-white">Menu</p>
+
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -199,7 +199,7 @@ function MobileMenu({
                   <button
                     key={it.id}
                     onClick={() => go(it.id)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-white/85 hover:bg-white/10 transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-white/90 hover:bg-white/10 transition"
                   >
                     {it.label}
                   </button>
@@ -207,17 +207,18 @@ function MobileMenu({
               </div>
 
               <div className="mt-6 rounded-xl border border-white/10 bg-black/30 p-4">
-                <p className="text-xs text-white/60">
-                  Dica: toque em uma seção para navegar.
+                <p className="text-xs text-white/65">
+                  Toque em uma seção para navegar.
                 </p>
               </div>
             </div>
-          </div>
+          </aside>
         </div>
       )}
     </>
   );
 }
+
 /** ===== Trabalhe Conosco (Footer) ===== */
 function FooterCareersForm() {
   const [loading, setLoading] = useState(false);
@@ -1066,7 +1067,7 @@ export default function Home() {
       ))}
     </nav>
 
-    <div className="flex min-w-0 shrink-0 items-center gap-2">
+    <div className="flex shrink-0 items-center gap-2">
       <a
         href={instagram}
         target="_blank"
@@ -1115,41 +1116,36 @@ export default function Home() {
 
 
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
-{/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
 <section className="w-full bg-[#0B0F1A]">
-  <div className="relative w-full aspect-[4/5] md:aspect-[16/9]">
+  {/* mobile */}
+  <video
+    className="block w-full h-auto md:hidden"
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="metadata"
+  >
+    <source
+      src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
+      type="video/mp4"
+    />
+  </video>
 
-    {/* VIDEO MOBILE */}
-    <video
-      className="absolute inset-0 w-full h-full object-cover md:hidden"
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="metadata"
-    >
-      <source
-        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
-        type="video/mp4"
-      />
-    </video>
-
-    {/* VIDEO DESKTOP */}
-    <video
-      className="absolute inset-0 w-full h-full object-cover hidden md:block"
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="metadata"
-    >
-      <source
-        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
-        type="video/mp4"
-      />
-    </video>
-
-  </div>
+  {/* desktop */}
+  <video
+    className="hidden w-full h-auto md:block"
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="metadata"
+  >
+    <source
+      src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
+      type="video/mp4"
+    />
+  </video>
 </section>
 
       {/* ===== O ESCRITÓRIO ===== */}
