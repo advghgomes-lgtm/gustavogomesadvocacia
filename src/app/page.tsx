@@ -1114,38 +1114,41 @@ export default function Home() {
       {/* Anchor */}
       <div id="inicio" className="scroll-mt-24" />
 
-
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
-<section className="w-full bg-[#0B0F1A]">
-  {/* mobile */}
-  <video
-    className="block w-full h-auto md:hidden"
-    autoPlay
-    muted
-    loop
-    playsInline
-    preload="metadata"
-  >
-    <source
-      src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
-      type="video/mp4"
-    />
-  </video>
+<section className="w-full bg-[#0B0F1A] overflow-hidden">
+  {/* MOBILE */}
+  <div className="block md:hidden">
+    <video
+      className="w-full h-auto"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+    >
+      <source
+        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
+        type="video/mp4"
+      />
+    </video>
+  </div>
 
-  {/* desktop */}
-  <video
-    className="hidden w-full h-auto md:block"
-    autoPlay
-    muted
-    loop
-    playsInline
-    preload="metadata"
-  >
-    <source
-      src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
-      type="video/mp4"
-    />
-  </video>
+  {/* DESKTOP */}
+  <div className="hidden md:block">
+    <video
+      className="w-full h-auto"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+    >
+      <source
+        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
+        type="video/mp4"
+      />
+    </video>
+  </div>
 </section>
 
       {/* ===== O ESCRITÓRIO ===== */}
