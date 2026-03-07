@@ -1153,7 +1153,7 @@ export default function Home() {
       {/* ===== O ESCRITÓRIO ===== */}
       <section
         id="escritorio"
-        className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-20"
+        className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 md:py-20"
       >
         <div className="grid lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-5">
