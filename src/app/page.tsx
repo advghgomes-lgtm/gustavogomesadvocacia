@@ -1118,9 +1118,9 @@ export default function Home() {
 <section className="w-full bg-[#0B0F1A] overflow-hidden">
 
  {/* MOBILE */}
-<div className="block md:hidden overflow-hidden max-h-[78vh] bg-[#0B0F1A]">
+<div className="block md:hidden overflow-hidden max-h-[74vh] bg-[#0B0F1A]">
   <video
-    className="block w-full h-auto -translate-y-6"
+    className="block w-full h-auto -translate-y-10"
     autoPlay
     muted
     loop
