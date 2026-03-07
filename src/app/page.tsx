@@ -130,7 +130,6 @@ type DetailModalState =
       note?: string;
     };
 
-/** ===== Menu Mobile ===== */
 function MobileMenu({
   items,
 }: {
@@ -156,7 +155,7 @@ function MobileMenu({
 
   function go(id: string) {
     setOpen(false);
-    setTimeout(() => scrollToId(id), 80);
+    setTimeout(() => scrollToId(id), 60);
   }
 
   return (
@@ -171,55 +170,43 @@ function MobileMenu({
         <IconMenu className="h-5 w-5 text-white/90" />
       </button>
 
-      <div
-        className={`fixed inset-0 z-[9999] md:hidden transition-all duration-300 ${
-          open ? "pointer-events-auto" : "pointer-events-none"
-        }`}
-        aria-hidden={!open}
-      >
-        {/* Fundo sólido */}
-        <div
-          onClick={() => setOpen(false)}
-          className={`absolute inset-0 bg-[#0B0F1A] transition-opacity duration-300 ${
-            open ? "opacity-100" : "opacity-0"
-          }`}
-        />
+      {open && (
+        <div className="fixed inset-0 z-[9999] md:hidden">
+          {/* fundo totalmente sólido */}
+          <div
+            className="absolute inset-0 bg-[#0B0F1A]"
+            onClick={() => setOpen(false)}
+          />
 
-        {/* Painel */}
-        <aside
-          className={`absolute right-0 top-0 h-full w-[88%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.95)] transition-transform duration-300 ${
-            open ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="flex items-center justify-between border-b border-white/10 px-5 py-5">
-            <div>
-              <p className="text-sm font-semibold text-white">Menu</p>
-              <p className="mt-1 text-xs text-white/55">
-                Navegue pelas seções do site
-              </p>
+          {/* painel */}
+          <aside className="absolute right-0 top-0 h-full w-[88%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.95)]">
+            <div className="flex items-center justify-between border-b border-white/10 px-5 py-5">
+              <div>
+                <p className="text-sm font-semibold text-white">Menu</p>
+                <p className="mt-1 text-xs text-white/55">
+                  Navegue pelas seções do site
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="rounded-xl border border-white/15 bg-white/5 p-2 transition hover:bg-white/10"
+                aria-label="Fechar"
+              >
+                <IconX className="h-5 w-5 text-white/90" />
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="rounded-xl border border-white/15 bg-white/5 p-2 transition hover:bg-white/10"
-              aria-label="Fechar"
-            >
-              <IconX className="h-5 w-5 text-white/90" />
-            </button>
-          </div>
-
-          <div className="flex h-[calc(100%-88px)] flex-col">
-            <div className="flex-1 overflow-y-auto px-5 py-5">
+            <div className="px-5 py-5">
               <div className="space-y-2">
-                {items.map((it, idx) => (
+                {items.map((it) => (
                   <button
                     key={it.id}
                     onClick={() => go(it.id)}
-                    className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 text-left text-sm text-white/90 transition hover:bg-white/10"
+                    className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 text-left text-sm text-white/90 transition hover:bg-white/10"
                   >
-                    <span>{it.label}</span>
-                    <span className="text-white/35">{String(idx + 1).padStart(2, "0")}</span>
+                    {it.label}
                   </button>
                 ))}
               </div>
@@ -238,9 +225,9 @@ function MobileMenu({
                 </a>
               </div>
             </div>
-          </div>
-        </aside>
-      </div>
+          </aside>
+        </div>
+      )}
     </>
   );
 }
