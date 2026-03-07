@@ -209,6 +209,138 @@ export default function BlogPostPage() {
           </article>
         )}
       </section>
+
+      <style jsx global>{`
+        .article-content {
+          color: rgba(255, 255, 255, 0.88);
+          font-size: 17px;
+          line-height: 1.9;
+        }
+
+        .article-content * {
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+
+        .article-content p,
+        .article-content div,
+        .article-content span,
+        .article-content li {
+          color: rgba(255, 255, 255, 0.88) !important;
+          font-size: 17px !important;
+        }
+
+        .article-content p {
+          margin: 1.25rem 0 !important;
+          text-align: justify !important;
+          line-height: 1.95 !important;
+        }
+
+        .article-content h1,
+        .article-content h2,
+        .article-content h3,
+        .article-content h4 {
+          color: #ffffff !important;
+          font-weight: 600 !important;
+          line-height: 1.25 !important;
+          margin-top: 2rem !important;
+          margin-bottom: 1rem !important;
+          text-align: left !important;
+        }
+
+        .article-content h1 {
+          font-size: 2rem !important;
+        }
+
+        .article-content h2 {
+          font-size: 1.6rem !important;
+        }
+
+        .article-content h3 {
+          font-size: 1.3rem !important;
+        }
+
+        .article-content a {
+          color: #d7b06a !important;
+          text-decoration: underline !important;
+          text-underline-offset: 4px;
+        }
+
+        .article-content strong,
+        .article-content b {
+          color: #ffffff !important;
+          font-weight: 700 !important;
+        }
+
+        .article-content em,
+        .article-content i {
+          font-style: italic !important;
+        }
+
+        .article-content ul {
+          list-style: disc !important;
+          margin: 1.25rem 0 !important;
+          padding-left: 1.5rem !important;
+        }
+
+        .article-content ol {
+          list-style: decimal !important;
+          margin: 1.25rem 0 !important;
+          padding-left: 1.5rem !important;
+        }
+
+        .article-content li {
+          margin: 0.45rem 0 !important;
+          text-align: justify !important;
+        }
+
+        .article-content blockquote {
+          margin: 1.75rem 0 !important;
+          padding: 1rem 1.25rem !important;
+          border-left: 4px solid #c8a15a !important;
+          background: rgba(255, 255, 255, 0.04) !important;
+          border-radius: 16px !important;
+          color: rgba(255, 255, 255, 0.78) !important;
+        }
+
+        .article-content img {
+          display: block !important;
+          width: 100% !important;
+          height: auto !important;
+          margin: 2rem auto !important;
+          border-radius: 18px !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .article-content hr {
+          border: 0 !important;
+          border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+          margin: 2rem 0 !important;
+        }
+
+        .article-content table {
+          width: 100% !important;
+          border-collapse: collapse !important;
+          margin: 1.5rem 0 !important;
+        }
+
+        .article-content th,
+        .article-content td {
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          padding: 0.85rem 1rem !important;
+          text-align: left !important;
+          color: rgba(255, 255, 255, 0.88) !important;
+        }
+
+        .article-content thead {
+          background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .article-content ol li::marker,
+        .article-content ul li::marker {
+          color: #d7b06a !important;
+        }
+      `}</style>
     </main>
   );
 }

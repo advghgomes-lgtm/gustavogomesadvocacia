@@ -5,13 +5,19 @@
 }
 
 .article-content * {
-  color: rgba(255, 255, 255, 0.88) !important;
   max-width: 100%;
+}
+
+.article-content p,
+.article-content div,
+.article-content span,
+.article-content li {
+  color: rgba(255, 255, 255, 0.88) !important;
 }
 
 .article-content p {
   margin: 1.25rem 0;
-  text-align: justify;
+  text-align: justify !important;
   line-height: 1.95;
 }
 
@@ -108,14 +114,11 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.85rem 1rem;
   text-align: left;
+  color: rgba(255, 255, 255, 0.88) !important;
 }
 
 .article-content thead {
   background: rgba(255, 255, 255, 0.05);
-}
-
-.article-content span {
-  color: inherit !important;
 }
 
 .article-content ol li::marker,
