@@ -174,12 +174,12 @@ function MobileMenu({
       {open && (
         <div className="fixed inset-0 z-[300] md:hidden">
           <div
-            className="absolute inset-0 bg-[#0B0F1A]/95"
+            className="absolute inset-0 bg-[#0B0F1A]"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
 
-          <aside className="absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.9)]">
+          <aside className="absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.9)] z-[310]">
             <div className="flex items-center justify-between border-b border-white/10 p-5">
               <p className="text-sm font-semibold text-white">Menu</p>
 
