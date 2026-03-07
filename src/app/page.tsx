@@ -1149,25 +1149,7 @@ export default function Home() {
       />
     </video>
   </div>
-
-    {/* VIDEO DESKTOP */}
-    <video
-      key="desktop-video"
-      className="absolute inset-0 hidden h-full w-full object-cover md:block"
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="metadata"
-    >
-      <source
-        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
-        type="video/mp4"
-      />
-    </video>
-  </div>
 </section>
-
       {/* ===== O ESCRITÓRIO ===== */}
       <section
         id="escritorio"
