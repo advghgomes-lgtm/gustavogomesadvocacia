@@ -70,6 +70,17 @@ function cleanPostHtml(html: string) {
   return cleaned.trim() || "<p></p>";
 }
 
+function getOptimizedCloudinaryImage(url?: string, width = 1600) {
+  if (!url) return "";
+
+  if (!url.includes("res.cloudinary.com")) return url;
+
+  return url.replace(
+    "/image/upload/",
+    `/image/upload/f_auto,q_auto,w_${width},c_limit/`
+  );
+}
+
 export default function BlogPostPage() {
   const params = useParams<{ slug: string }>();
   const slug = params?.slug;
@@ -220,9 +231,9 @@ export default function BlogPostPage() {
               <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5">
                 {post.coverImage ? (
                   <Image
-                    src={post.coverImage}
+                    src={getOptimizedCloudinaryImage(post.coverImage, 1600)}
                     alt={post.title}
-                    width={1600}
+                   width={1600}
                     height={900}
                     className="h-[220px] w-full object-cover sm:h-[320px] md:h-[420px]"
                   />

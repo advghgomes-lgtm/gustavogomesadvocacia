@@ -41,6 +41,16 @@ function sanitizeEditorHtml(html: string) {
     .replace(/ align="[^"]*"/gi, "");
 }
 
+function getOptimizedCloudinaryImage(url?: string, width = 1200) {
+  if (!url) return "";
+  if (!url.includes("res.cloudinary.com")) return url;
+
+  return url.replace(
+    "/image/upload/",
+    `/image/upload/f_auto,q_auto,w_${width},c_limit/`
+  );
+}
+
 export default function AdminPostEditorPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
@@ -248,7 +258,7 @@ export default function AdminPostEditorPage() {
 
   if (authLoading) {
     return (
-      <main className="min-h-screen bg-[#0B0F1A] text-white p-10">
+      <main className="min-h-screen bg-[#0B0F1A] p-10 text-white">
         Carregando...
       </main>
     );
@@ -261,12 +271,12 @@ export default function AdminPostEditorPage() {
 
   if (!isAdmin) {
     return (
-      <main className="min-h-screen bg-[#0B0F1A] text-white p-10">
-        <p className="text-red-200 font-semibold">Acesso negado.</p>
+      <main className="min-h-screen bg-[#0B0F1A] p-10 text-white">
+        <p className="font-semibold text-red-200">Acesso negado.</p>
         <p className="mt-2 text-white/70">Somente o admin pode editar posts.</p>
         <a
           href="/"
-          className="mt-6 inline-flex rounded-xl border border-white/20 bg-white/5 px-5 py-3 hover:bg-white/10 transition"
+          className="mt-6 inline-flex rounded-xl border border-white/20 bg-white/5 px-5 py-3 transition hover:bg-white/10"
         >
           Voltar
         </a>
@@ -277,7 +287,7 @@ export default function AdminPostEditorPage() {
   return (
     <main className="min-h-screen bg-[#0B0F1A] text-white">
       <header className="border-b border-white/10">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between gap-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4">
           <a
             href="/admin"
             className="relative h-10 w-[200px]"
@@ -295,21 +305,21 @@ export default function AdminPostEditorPage() {
           <div className="flex items-center gap-3">
             <a
               href={whatsapp}
-              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
+              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
             >
               WhatsApp
             </a>
 
             <a
               href="/blog"
-              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition"
+              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
             >
               Ver blog
             </a>
 
             <a
               href="/admin"
-              className="rounded-xl bg-white text-[#0B0F1A] px-4 py-2 text-sm font-semibold hover:bg-white/90 transition"
+              className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-[#0B0F1A] transition hover:bg-white/90"
             >
               Voltar ao painel
             </a>
@@ -335,11 +345,11 @@ export default function AdminPostEditorPage() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <button
               disabled={saving || deleting}
               onClick={() => saveBase("published")}
-              className="rounded-xl bg-[#C8A15A] text-[#0B0F1A] px-5 py-3 font-semibold hover:opacity-95 transition disabled:opacity-60"
+              className="rounded-xl bg-[#C8A15A] px-5 py-3 font-semibold text-[#0B0F1A] transition hover:opacity-95 disabled:opacity-60"
             >
               {saving ? "Salvando..." : "Publicar"}
             </button>
@@ -347,7 +357,7 @@ export default function AdminPostEditorPage() {
             <button
               disabled={saving || deleting}
               onClick={() => saveBase("draft")}
-              className="rounded-xl border border-white/20 bg-white/5 px-5 py-3 font-semibold hover:bg-white/10 transition disabled:opacity-60"
+              className="rounded-xl border border-white/20 bg-white/5 px-5 py-3 font-semibold transition hover:bg-white/10 disabled:opacity-60"
               title="Despublica e volta para rascunho"
             >
               {saving ? "Salvando..." : "Despublicar"}
@@ -356,7 +366,7 @@ export default function AdminPostEditorPage() {
             <button
               disabled={saving || deleting}
               onClick={deletePost}
-              className="rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-3 font-semibold text-red-200 hover:bg-red-500/15 transition disabled:opacity-60"
+              className="rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-3 font-semibold text-red-200 transition hover:bg-red-500/15 disabled:opacity-60"
               title="Exclui permanentemente do Firestore"
             >
               {deleting ? "Excluindo..." : "Excluir post"}
@@ -369,7 +379,7 @@ export default function AdminPostEditorPage() {
             Carregando post...
           </div>
         ) : (
-          <div className="mt-8 grid lg:grid-cols-12 gap-8">
+          <div className="mt-8 grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-4">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
                 <label className="text-xs text-white/60">Título</label>
@@ -405,7 +415,7 @@ export default function AdminPostEditorPage() {
                 <textarea
                   value={excerpt}
                   onChange={(e) => setExcerpt(e.target.value)}
-                  className="mt-2 w-full min-h-[120px] rounded-xl border border-white/10 bg-[#0B0F1A] px-4 py-3 text-sm outline-none focus:border-white/25"
+                  className="mt-2 min-h-[120px] w-full rounded-xl border border-white/10 bg-[#0B0F1A] px-4 py-3 text-sm outline-none focus:border-white/25"
                   placeholder="Resumo curto para aparecer na home e na lista do blog"
                 />
 
@@ -421,23 +431,23 @@ export default function AdminPostEditorPage() {
                     placeholder="https://..."
                   />
 
-                  <label className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 hover:bg-white/10 transition">
+                  <label className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 transition hover:bg-white/10">
                     {uploadingCover ? "Enviando imagem..." : "Upload para Cloudinary"}
                     <input
                       type="file"
                       accept="image/*"
                       className="hidden"
                       onChange={async (e) => {
-                      const input = e.currentTarget;
-                      const file = input.files?.[0];
-                      if (!file) return;
+                        const input = e.currentTarget;
+                        const file = input.files?.[0];
+                        if (!file) return;
 
-                      try {
-                        await uploadCoverToCloudinary(file);
-                     } finally {
-                       input.value = "";
-                      }
-                    }}
+                        try {
+                          await uploadCoverToCloudinary(file);
+                        } finally {
+                          input.value = "";
+                        }
+                      }}
                     />
                   </label>
                 </div>
@@ -445,7 +455,7 @@ export default function AdminPostEditorPage() {
                 <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-[#0B0F1A]">
                   {coverImage.trim() ? (
                     <img
-                      src={coverImage}
+                      src={getOptimizedCloudinaryImage(coverImage, 1200)}
                       alt="Prévia da capa"
                       className="h-48 w-full object-cover"
                     />
@@ -459,7 +469,7 @@ export default function AdminPostEditorPage() {
 
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
                 <p className="text-sm font-semibold">Dica rápida</p>
-                <p className="mt-2 text-sm text-white/70 leading-relaxed">
+                <p className="mt-2 text-sm leading-relaxed text-white/70">
                   Use títulos, parágrafos, listas e negrito para facilitar a leitura.
                   A imagem de capa aparecerá na página pública do artigo.
                 </p>
@@ -467,32 +477,32 @@ export default function AdminPostEditorPage() {
             </div>
 
             <div className="lg:col-span-8">
-              <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
-                <div className="p-3 border-b border-white/10 flex flex-wrap gap-2">
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                <div className="flex flex-wrap gap-2 border-b border-white/10 p-3">
                   <button
                     onClick={() => exec("bold")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Negrito
                   </button>
                   <button
                     onClick={() => exec("italic")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Itálico
                   </button>
                   <button
                     onClick={() => exec("underline")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Sublinhado
                   </button>
                   <button
                     onClick={() => insertLink()}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Link
@@ -502,21 +512,21 @@ export default function AdminPostEditorPage() {
 
                   <button
                     onClick={() => exec("formatBlock", "h2")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Título H2
                   </button>
                   <button
                     onClick={() => exec("formatBlock", "h3")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Título H3
                   </button>
                   <button
                     onClick={() => exec("formatBlock", "p")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Parágrafo
@@ -526,21 +536,21 @@ export default function AdminPostEditorPage() {
 
                   <button
                     onClick={() => exec("insertUnorderedList")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Lista
                   </button>
                   <button
                     onClick={() => exec("insertOrderedList")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     1,2,3
                   </button>
                   <button
                     onClick={() => exec("removeFormat")}
-                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+                    className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm transition hover:bg-white/10"
                     type="button"
                   >
                     Limpar formatação
@@ -568,7 +578,7 @@ export default function AdminPostEditorPage() {
                 {coverImage.trim() ? (
                   <div className="mt-4 overflow-hidden rounded-2xl border border-white/10">
                     <img
-                      src={coverImage}
+                      src={getOptimizedCloudinaryImage(coverImage, 1200)}
                       alt="Prévia da capa"
                       className="h-64 w-full object-cover"
                     />
@@ -576,7 +586,7 @@ export default function AdminPostEditorPage() {
                 ) : null}
 
                 <div
-                  className="mt-4 prose prose-invert max-w-none [&_*]:text-white [&_a]:text-[#D7B06A]"
+                  className="prose prose-invert mt-4 max-w-none [&_*]:text-white [&_a]:text-[#D7B06A]"
                   dangerouslySetInnerHTML={{
                     __html: contentHtml || "<p>(sem conteúdo)</p>",
                   }}
