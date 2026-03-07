@@ -1115,12 +1115,13 @@ export default function Home() {
 
 
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
-<section className="relative w-full overflow-hidden">
-  <div className="relative h-[55svh] sm:h-[60svh] md:h-[85vh]">
+
+<section className="relative w-full overflow-hidden bg-[#0B0F1A]">
+  <div className="relative h-[78svh] sm:h-[82svh] md:h-[85vh]">
     {/* VIDEO MOBILE */}
     <video
       key="mobile-video"
-      className="absolute inset-0 w-full h-full object-cover md:hidden"
+      className="absolute inset-0 h-full w-full object-cover md:hidden"
       autoPlay
       muted
       loop
@@ -1136,7 +1137,7 @@ export default function Home() {
     {/* VIDEO DESKTOP */}
     <video
       key="desktop-video"
-      className="absolute inset-0 w-full h-full object-cover hidden md:block"
+      className="absolute inset-0 hidden h-full w-full object-cover md:block"
       autoPlay
       muted
       loop
