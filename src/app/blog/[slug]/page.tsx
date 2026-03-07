@@ -30,10 +30,14 @@ export default function BlogPostPage() {
       setLoadError(null);
 
       try {
-        // ✅ Só filtra por slug (sem combinar com status para evitar índice)
-        // As regras do Firestore já impedem leitura de draft (status != published).
         const postsRef = collection(db, "posts");
-        const q = query(postsRef, where("slug", "==", slug), limit(1));
+        const q = query(
+          postsRef,
+          where("slug", "==", slug),
+          where("status", "==", "published"),
+          limit(1)
+        );
+
         const snap = await getDocs(q);
 
         if (snap.empty) {
@@ -110,7 +114,6 @@ export default function BlogPostPage() {
             </p>
             <h1 className="mt-3 text-4xl font-semibold leading-tight">{post.title}</h1>
 
-            {/* Visual padrão (sem opções de fonte) */}
             <article className="mt-8 space-y-4 text-white/80 leading-relaxed">
               <div
                 className="rounded-2xl border border-white/10 bg-white/5 p-6"
