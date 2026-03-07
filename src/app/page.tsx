@@ -156,7 +156,6 @@ function MobileMenu({
 
   function go(id: string) {
     setOpen(false);
-    // pequena espera para fechar o overlay antes do scroll (sensação melhor no mobile)
     setTimeout(() => scrollToId(id), 50);
   }
 
@@ -173,16 +172,16 @@ function MobileMenu({
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[200] md:hidden">
+        <div className="fixed inset-0 z-[200] bg-[#0B0F1A] md:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-black/70"
+            className="absolute inset-0 bg-black/80"
             onClick={() => setOpen(false)}
             aria-label="Fechar menu"
           />
 
-          <div className="absolute right-0 top-0 h-full w-[86%] max-w-sm bg-[#0B0F1A] border-l border-white/10 shadow-[0_30px_120px_rgba(0,0,0,0.7)]">
-            <div className="flex items-center justify-between p-5 border-b border-white/10">
+          <div className="absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.85)]">
+            <div className="flex items-center justify-between border-b border-white/10 p-5">
               <p className="text-sm font-semibold text-white/90">Menu</p>
               <button
                 type="button"
@@ -200,14 +199,14 @@ function MobileMenu({
                   <button
                     key={it.id}
                     onClick={() => go(it.id)}
-                    className="w-full text-left rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/85 hover:bg-white/10 transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-white/85 hover:bg-white/10 transition"
                   >
                     {it.label}
                   </button>
                 ))}
               </div>
 
-              <div className="mt-6 rounded-xl border border-white/10 bg-black/20 p-4">
+              <div className="mt-6 rounded-xl border border-white/10 bg-black/30 p-4">
                 <p className="text-xs text-white/60">
                   Dica: toque em uma seção para navegar.
                 </p>
@@ -219,7 +218,6 @@ function MobileMenu({
     </>
   );
 }
-
 /** ===== Trabalhe Conosco (Footer) ===== */
 function FooterCareersForm() {
   const [loading, setLoading] = useState(false);
@@ -1040,81 +1038,77 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#0B0F1A] text-white">
       {/* Header (sticky) */}
-      <header className="sticky top-0 z-50 bg-[#0B0F1A]/85 backdrop-blur border-b border-white/10">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
-          <button
-            onClick={() => scrollToId("inicio")}
-            className="relative h-12 w-[190px] sm:h-14 sm:w-[260px]"
-            aria-label="Ir para o início"
-          >
-            <Image
-              src="/brand/logo-horizontal.png"
-              alt="Gustavo Gomes Advocacia"
-              fill
-              className="object-contain"
-              priority
-            />
-          </button>
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0B0F1A]/90 backdrop-blur">
+  <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
+    <button
+      onClick={() => scrollToId("inicio")}
+      className="relative h-12 w-[190px] shrink-0 sm:h-14 sm:w-[260px]"
+      aria-label="Ir para o início"
+    >
+      <Image
+        src="/brand/logo-horizontal.png"
+        alt="Gustavo Gomes Advocacia"
+        fill
+        className="object-contain object-left"
+        priority
+      />
+    </button>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
-            {navItems.map((it) => (
-              <button
-                key={it.id}
-                onClick={() => scrollToId(it.id)}
-                className="hover:text-white transition"
-              >
-                {it.label}
-              </button>
-            ))}
-          </nav>
+    <nav className="hidden md:flex items-center gap-4 text-[13px] text-white/80">
+      {navItems.map((it) => (
+        <button
+          key={it.id}
+          onClick={() => scrollToId(it.id)}
+          className="whitespace-nowrap hover:text-white transition"
+        >
+          {it.label}
+        </button>
+      ))}
+    </nav>
 
-          {/* Social + Menu mobile + CTA */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <a
-              href={instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
-              aria-label="Instagram"
-              title="Instagram"
-            >
-              <IconInstagram className="h-5 w-5 text-white/85" />
-            </a>
+    <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+      <a
+        href={instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
+        aria-label="Instagram"
+        title="Instagram"
+      >
+        <IconInstagram className="h-5 w-5 text-white/85" />
+      </a>
 
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
-              aria-label="LinkedIn"
-              title="LinkedIn"
-            >
-              <IconLinkedIn className="h-5 w-5 text-white/85" />
-            </a>
+      <a
+        href={linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
+        aria-label="LinkedIn"
+        title="LinkedIn"
+      >
+        <IconLinkedIn className="h-5 w-5 text-white/85" />
+      </a>
 
-            <a
-              href={whatsapp}
-              className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
-              aria-label="WhatsApp"
-              title="WhatsApp"
-            >
-              <IconWhatsApp className="h-5 w-5 text-white/85" />
-            </a>
+      <a
+        href={whatsapp}
+        className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
+        aria-label="WhatsApp"
+        title="WhatsApp"
+      >
+        <IconWhatsApp className="h-5 w-5 text-white/85" />
+      </a>
 
-            {/* ✅ Menu mobile */}
-            <MobileMenu items={navItems} />
+      <MobileMenu items={navItems} />
 
-            {/* CTA só a partir do sm */}
-            <a
-              href={whatsapp}
-              className="hidden sm:inline-flex rounded-xl bg-white text-[#0B0F1A] px-4 py-2 text-sm font-semibold hover:bg-white/90 transition"
-            >
-              Entre em contato
-            </a>
-          </div>
-        </div>
-      </header>
+      <a
+        href={whatsapp}
+        className="hidden sm:inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-[#0B0F1A] hover:bg-white/90 transition"
+      >
+        Entre em contato
+      </a>
+    </div>
+  </div>
+</header>
 
       {/* Anchor */}
       <div id="inicio" className="scroll-mt-24" />
