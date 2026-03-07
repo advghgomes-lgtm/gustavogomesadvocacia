@@ -1115,13 +1115,12 @@ export default function Home() {
 
 
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
-
 <section className="relative w-full overflow-hidden bg-[#0B0F1A]">
-  <div className="relative h-[78svh] sm:h-[82svh] md:h-[85vh]">
+  <div className="relative h-[55svh] sm:h-[60svh] md:h-[85vh]">
     {/* VIDEO MOBILE */}
     <video
       key="mobile-video"
-      className="absolute inset-0 h-full w-full object-cover md:hidden"
+      className="absolute inset-0 h-full w-full object-contain md:hidden"
       autoPlay
       muted
       loop
@@ -1133,6 +1132,25 @@ export default function Home() {
         type="video/mp4"
       />
     </video>
+
+    {/* VIDEO DESKTOP */}
+    <video
+      key="desktop-video"
+      className="absolute inset-0 hidden h-full w-full object-cover md:block"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+    >
+      <source
+        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772222795/homepage-video_d7wdsl.mp4"
+        type="video/mp4"
+      />
+    </video>
+  </div>
+</section>
+
 
     {/* VIDEO DESKTOP */}
     <video
