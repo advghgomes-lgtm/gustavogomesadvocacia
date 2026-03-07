@@ -1116,9 +1116,9 @@ export default function Home() {
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
 <section className="w-full bg-[#0B0F1A] overflow-hidden">
   {/* MOBILE */}
-  <div className="relative block h-[64vh] overflow-hidden bg-[#0B0F1A] md:hidden">
+  <div className="relative block h-[60vh] overflow-hidden bg-[#0B0F1A] md:hidden">
     <video
-      className="absolute left-0 top-1/2 w-full -translate-y-[56%]"
+      className="absolute left-0 top-1/2 w-full -translate-y-[60%]"
       autoPlay
       muted
       loop
