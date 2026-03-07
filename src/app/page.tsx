@@ -1115,12 +1115,13 @@ export default function Home() {
 
 
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
-<section className="relative w-full overflow-hidden bg-[#0B0F1A]">
-  <div className="relative h-[55svh] sm:h-[60svh] md:h-[85vh]">
+{/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
+<section className="w-full bg-[#0B0F1A]">
+  <div className="relative w-full aspect-[4/5] md:aspect-[16/9]">
+
     {/* VIDEO MOBILE */}
     <video
-      key="mobile-video"
-      className="absolute inset-0 h-full w-full object-contain md:hidden"
+      className="absolute inset-0 w-full h-full object-cover md:hidden"
       autoPlay
       muted
       loop
@@ -1128,15 +1129,14 @@ export default function Home() {
       preload="metadata"
     >
       <source
-        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239558/home-mobile_wlqd3w.mp4"
+        src="https://res.cloudinary.com/dlkkgxv8f/video/upload/v1772239521/home-mobile_jycldt.mp4"
         type="video/mp4"
       />
     </video>
 
     {/* VIDEO DESKTOP */}
     <video
-      key="desktop-video"
-      className="absolute inset-0 hidden h-full w-full object-cover md:block"
+      className="absolute inset-0 w-full h-full object-cover hidden md:block"
       autoPlay
       muted
       loop
@@ -1148,8 +1148,10 @@ export default function Home() {
         type="video/mp4"
       />
     </video>
+
   </div>
 </section>
+
       {/* ===== O ESCRITÓRIO ===== */}
       <section
         id="escritorio"
