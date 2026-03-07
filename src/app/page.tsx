@@ -1150,68 +1150,73 @@ export default function Home() {
   </div>
 </section>
 
-      {/* ===== O ESCRITÓRIO ===== */}
-      <section
-        id="escritorio"
-        className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 md:py-20"
-      >
-        <div className="grid lg:grid-cols-12 gap-10 items-start">
-          <div className="lg:col-span-5">
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-              <Image
-                src="/media/handshake.png"
-                alt="Atendimento jurídico com foco em negociação e confiança"
-                width={1100}
-                height={800}
-                className="h-[220px] sm:h-[280px] md:h-[320px] w-full object-cover"
-                priority
-              />
-            </div>
-          </div>
+     {/* ===== O ESCRITÓRIO ===== */}
+<section
+  id="escritorio"
+  className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 md:py-20"
+>
+  <div className="grid lg:grid-cols-12 gap-10 items-start">
 
-          <div className="lg:col-span-7">
-            <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs text-white/70">
-              <span className="h-2 w-2 rounded-full bg-[#C8A15A]" />
-              Advocacia estratégica • Clareza • Resultados
-            </p>
+    {/* TEXTO */}
+    <div className="order-1 lg:order-none lg:col-span-7">
+      <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs text-white/70">
+        <span className="h-2 w-2 rounded-full bg-[#C8A15A]" />
+        Advocacia estratégica • Clareza • Resultados
+      </p>
 
-            <h2 className="mt-6 text-3xl md:text-4xl font-semibold leading-tight">
-              O escritório
-            </h2>
+      <h2 className="mt-6 text-3xl md:text-4xl font-semibold leading-tight">
+        O escritório
+      </h2>
 
-            <p className="mt-4 text-white/70 leading-relaxed text-justify">
-              No escritório acreditamos que o Direito deve ser claro, acessível e estratégico.
-              Atuamos de forma full service, oferecendo suporte completo em diversas áreas, com forte
-              presença no Direito Cível, Empresarial, Tributário, Bancário e Consumidor.
-            </p>
+      <p className="mt-4 text-white/70 leading-relaxed text-justify">
+        No escritório acreditamos que o Direito deve ser claro, acessível e estratégico.
+        Atuamos de forma full service, oferecendo suporte completo em diversas áreas, com forte
+        presença no Direito Cível, Empresarial, Tributário, Bancário e Consumidor.
+      </p>
 
-            <p className="mt-4 text-white/70 leading-relaxed text-justify">
-              Aqui, cada cliente é ouvido, cada caso é analisado com profundidade e cada estratégia é
-              construída com responsabilidade e comprometimento.
-            </p>
+      <p className="mt-4 text-white/70 leading-relaxed text-justify">
+        Aqui, cada cliente é ouvido, cada caso é analisado com profundidade e cada estratégia é
+        construída com responsabilidade e comprometimento.
+      </p>
 
-            <p className="mt-4 text-white/70 leading-relaxed text-justify">
-              Advocacia com técnica. Estratégia com propósito. Atendimento com humanidade.
-            </p>
+      <p className="mt-4 text-white/70 leading-relaxed text-justify">
+        Advocacia com técnica. Estratégia com propósito. Atendimento com humanidade.
+      </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <a
-                href={whatsapp}
-                className="inline-flex items-center justify-center rounded-xl bg-[#C8A15A] text-[#0B0F1A] px-6 py-3 font-semibold hover:opacity-95 transition"
-              >
-                Falar no WhatsApp
-              </a>
-              <button
-                type="button"
-                onClick={() => scrollToId("areas")}
-                className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 py-3 font-semibold hover:bg-white/10 transition"
-              >
-                Ver áreas de atuação
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="mt-8 flex flex-col sm:flex-row gap-4">
+        <a
+          href={whatsapp}
+          className="inline-flex items-center justify-center rounded-xl bg-[#C8A15A] text-[#0B0F1A] px-6 py-3 font-semibold hover:opacity-95 transition"
+        >
+          Falar no WhatsApp
+        </a>
+
+        <button
+          type="button"
+          onClick={() => scrollToId("areas")}
+          className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 py-3 font-semibold hover:bg-white/10 transition"
+        >
+          Ver áreas de atuação
+        </button>
+      </div>
+    </div>
+
+    {/* IMAGEM */}
+    <div className="order-2 lg:order-none lg:col-span-5">
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+        <Image
+          src="/media/handshake.png"
+          alt="Atendimento jurídico com foco em negociação e confiança"
+          width={1100}
+          height={800}
+          className="h-[220px] sm:h-[280px] md:h-[320px] w-full object-cover"
+          priority
+        />
+      </div>
+    </div>
+
+  </div>
+</section>
 
       {/* ===== FUNDADOR ===== */}
       <section className="bg-black/20 border-y border-white/10">
