@@ -1150,15 +1150,29 @@ export default function Home() {
   </div>
 </section>
 
-     {/* ===== O ESCRITÓRIO ===== */}
+{/* ===== O ESCRITÓRIO ===== */}
 <section
   id="escritorio"
   className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 md:py-20"
 >
   <div className="grid lg:grid-cols-12 gap-10 items-start">
 
+    {/* IMAGEM (somente desktop) */}
+    <div className="hidden lg:block lg:col-span-5">
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+        <Image
+          src="/media/handshake.png"
+          alt="Atendimento jurídico com foco em negociação e confiança"
+          width={1100}
+          height={800}
+          className="h-[220px] sm:h-[280px] md:h-[320px] w-full object-cover"
+          priority
+        />
+      </div>
+    </div>
+
     {/* TEXTO */}
-    <div className="order-1 lg:order-none lg:col-span-7">
+    <div className="lg:col-span-7">
       <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs text-white/70">
         <span className="h-2 w-2 rounded-full bg-[#C8A15A]" />
         Advocacia estratégica • Clareza • Resultados
@@ -1198,20 +1212,6 @@ export default function Home() {
         >
           Ver áreas de atuação
         </button>
-      </div>
-    </div>
-
-    {/* IMAGEM */}
-    <div className="order-2 lg:order-none lg:col-span-5">
-      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-        <Image
-          src="/media/handshake.png"
-          alt="Atendimento jurídico com foco em negociação e confiança"
-          width={1100}
-          height={800}
-          className="h-[220px] sm:h-[280px] md:h-[320px] w-full object-cover"
-          priority
-        />
       </div>
     </div>
 
