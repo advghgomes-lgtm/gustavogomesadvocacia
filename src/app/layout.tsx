@@ -16,21 +16,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Gustavo Gomes Advocacia",
   description: "Soluções jurídicas estratégicas para você e sua empresa",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="pt-BR">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
-        <CookieBanner />
-      </body>
-    </html>
-    export const metadata = {
   icons: {
     icon: [
       { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
@@ -39,5 +24,17 @@ export default function RootLayout({
   },
 };
 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="pt-BR">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {children}
+        <CookieBanner />
+      </body>
+    </html>
   );
 }
