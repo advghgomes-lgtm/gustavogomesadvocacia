@@ -1149,8 +1149,6 @@ export default function Home() {
       />
     </video>
   </div>
-</section>
-
 
     {/* VIDEO DESKTOP */}
     <video
