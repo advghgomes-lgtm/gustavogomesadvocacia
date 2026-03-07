@@ -24,3 +24,6 @@ canvas {
   display: block;
   max-width: 100%;
 }
+html, body {
+  overflow-x: hidden;
+}

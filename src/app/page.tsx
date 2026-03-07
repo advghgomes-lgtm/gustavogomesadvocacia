@@ -1036,13 +1036,13 @@ export default function Home() {
   }, [founderOpen, detailModal.open]);
 
   return (
-    <main className="min-h-screen bg-[#0B0F1A] text-white">
+    <main className="min-h-screen overflow-x-hidden bg-[#0B0F1A] text-white">
       {/* Header (sticky) */}
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0B0F1A]/90 backdrop-blur">
-  <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
+  <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 overflow-hidden px-4 py-3 sm:px-6 sm:py-4">
     <button
       onClick={() => scrollToId("inicio")}
-      className="relative h-12 w-[190px] shrink-0 sm:h-14 sm:w-[260px]"
+      className="relative h-10 w-[150px] shrink-0 sm:h-12 sm:w-[190px] md:h-14 md:w-[260px]"
       aria-label="Ir para o início"
     >
       <Image
@@ -1066,23 +1066,23 @@ export default function Home() {
       ))}
     </nav>
 
-    <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+    <div className="flex min-w-0 shrink-0 items-center gap-2">
       <a
         href={instagram}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
+        className="rounded-xl border border-white/15 bg-white/5 p-2 transition hover:bg-white/10"
         aria-label="Instagram"
         title="Instagram"
       >
-        <IconInstagram className="h-5 w-5 text-white/85" />
+        <IconInstagram className="h-4 w-4 sm:h-5 sm:w-5 text-white/85" />
       </a>
 
       <a
         href={linkedin}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
+        className="hidden sm:inline-flex rounded-xl border border-white/15 bg-white/5 p-2 transition hover:bg-white/10"
         aria-label="LinkedIn"
         title="LinkedIn"
       >
@@ -1091,18 +1091,18 @@ export default function Home() {
 
       <a
         href={whatsapp}
-        className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
+        className="rounded-xl border border-white/15 bg-white/5 p-2 transition hover:bg-white/10"
         aria-label="WhatsApp"
         title="WhatsApp"
       >
-        <IconWhatsApp className="h-5 w-5 text-white/85" />
+        <IconWhatsApp className="h-4 w-4 sm:h-5 sm:w-5 text-white/85" />
       </a>
 
       <MobileMenu items={navItems} />
 
       <a
         href={whatsapp}
-        className="hidden sm:inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-[#0B0F1A] hover:bg-white/90 transition"
+        className="hidden md:inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-[#0B0F1A] transition hover:bg-white/90"
       >
         Entre em contato
       </a>
