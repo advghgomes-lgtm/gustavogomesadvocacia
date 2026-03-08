@@ -155,7 +155,7 @@ function MobileMenu({
 
   function go(id: string) {
     setOpen(false);
-    setTimeout(() => scrollToId(id), 60);
+    setTimeout(() => scrollToId(id), 50);
   }
 
   return (
@@ -163,69 +163,55 @@ function MobileMenu({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="md:hidden rounded-xl border border-white/15 bg-white/5 p-2 transition hover:bg-white/10"
+        className="md:hidden rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
         aria-label="Abrir menu"
         title="Menu"
       >
-        <IconMenu className="h-5 w-5 text-white/90" />
+        <IconMenu className="h-5 w-5 text-white/85" />
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[9999] md:hidden">
-          {/* fundo totalmente sólido */}
-          <div
-            className="absolute inset-0 bg-[#0B0F1A]"
+        <div className="fixed inset-0 z-[999] md:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/85"
             onClick={() => setOpen(false)}
+            aria-label="Fechar menu"
           />
 
-          {/* painel */}
-          <aside className="absolute right-0 top-0 h-full w-[88%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.95)]">
-            <div className="flex items-center justify-between border-b border-white/10 px-5 py-5">
-              <div>
-                <p className="text-sm font-semibold text-white">Menu</p>
-                <p className="mt-1 text-xs text-white/55">
-                  Navegue pelas seções do site
-                </p>
-              </div>
-
+          <div className="absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-white/10 bg-[#0B0F1A] shadow-[0_30px_120px_rgba(0,0,0,0.85)]">
+            <div className="flex items-center justify-between border-b border-white/10 p-5">
+              <p className="text-sm font-semibold text-white/90">Menu</p>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="rounded-xl border border-white/15 bg-white/5 p-2 transition hover:bg-white/10"
+                className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10 transition"
                 aria-label="Fechar"
               >
-                <IconX className="h-5 w-5 text-white/90" />
+                <IconX className="h-5 w-5 text-white/85" />
               </button>
             </div>
 
-            <div className="px-5 py-5">
+            <div className="p-5">
               <div className="space-y-2">
                 {items.map((it) => (
                   <button
                     key={it.id}
                     onClick={() => go(it.id)}
-                    className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 text-left text-sm text-white/90 transition hover:bg-white/10"
+                    className="w-full text-left rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/85 hover:bg-white/10 transition"
                   >
                     {it.label}
                   </button>
                 ))}
               </div>
 
-              <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
-                <p className="text-xs font-medium text-white/75">Atendimento</p>
-                <p className="mt-2 text-sm leading-relaxed text-white/60">
-                  Fale pelo WhatsApp para orientações iniciais e agendamento.
+              <div className="mt-6 rounded-xl border border-white/10 bg-black/30 p-4">
+                <p className="text-xs text-white/60">
+                  Dica: toque em uma seção para navegar.
                 </p>
-
-                <a
-                  href="https://wa.me/5516997434946"
-                  className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-[#C8A15A] px-4 py-3 text-sm font-semibold text-[#0B0F1A] transition hover:opacity-95"
-                >
-                  Falar no WhatsApp
-                </a>
               </div>
             </div>
-          </aside>
+          </div>
         </div>
       )}
     </>
