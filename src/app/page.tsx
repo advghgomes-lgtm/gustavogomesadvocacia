@@ -138,20 +138,16 @@ function MobileMenu({
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!open) return;
-
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
 
     document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
     };
-  }, [open]);
+  }, []);
 
   function go(id: string) {
     setOpen(false);
@@ -165,49 +161,46 @@ function MobileMenu({
         onClick={() => setOpen(true)}
         className="md:hidden rounded-xl border border-white/15 bg-[#1F2937] p-2 hover:bg-[#273244] transition"
         aria-label="Abrir menu"
-        title="Menu"
       >
         <IconMenu className="h-5 w-5 text-white" />
       </button>
 
       {open && (
         <div className="fixed inset-0 z-[999] md:hidden">
-          <button
-            type="button"
+          {/* fundo */}
+          <div
             className="absolute inset-0 bg-[#0B0F1A]"
             onClick={() => setOpen(false)}
-            aria-label="Fechar menu"
           />
 
-          <div className="absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-white/10 bg-[#111827] shadow-[0_30px_120px_rgba(0,0,0,0.9)]">
+          {/* painel */}
+          <div className="absolute right-0 top-0 h-full w-[86%] max-w-sm bg-[#111827] border-l border-white/10 shadow-[0_30px_120px_rgba(0,0,0,0.9)]">
             <div className="flex items-center justify-between border-b border-white/10 p-5">
               <p className="text-sm font-semibold text-white">Menu</p>
+
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 className="rounded-xl border border-white/15 bg-[#1F2937] p-2 hover:bg-[#273244] transition"
-                aria-label="Fechar"
               >
                 <IconX className="h-5 w-5 text-white" />
               </button>
             </div>
 
-            <div className="p-5">
-              <div className="space-y-2">
-                {items.map((it) => (
-                  <button
-                    key={it.id}
-                    onClick={() => go(it.id)}
-                    className="w-full text-left rounded-xl border border-white/10 bg-[#1F2937] px-4 py-3 text-sm text-white hover:bg-[#273244] transition"
-                  >
-                    {it.label}
-                  </button>
-                ))}
-              </div>
+            <div className="p-5 space-y-2">
+              {items.map((it) => (
+                <button
+                  key={it.id}
+                  onClick={() => go(it.id)}
+                  className="w-full text-left rounded-xl border border-white/10 bg-[#1F2937] px-4 py-3 text-sm text-white hover:bg-[#273244] transition"
+                >
+                  {it.label}
+                </button>
+              ))}
 
               <div className="mt-6 rounded-xl border border-white/10 bg-[#1F2937] p-4">
                 <p className="text-xs text-white/70">
-                  Dica: toque em uma seção para navegar.
+                  Toque em uma seção para navegar.
                 </p>
               </div>
             </div>
