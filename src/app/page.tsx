@@ -1031,8 +1031,8 @@ export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0B0F1A] text-white">
       {/* Header (sticky) */}
-     <header className="sticky top-0 z-50 bg-[#0B0F1A]/90 backdrop-blur border-b border-white/10">
-  <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 overflow-hidden px-4 py-3 sm:px-6 sm:py-4">
+     <header className="fixed inset-x-0 top-0 z-[1000] border-b border-white/10 bg-[#0B0F1A]">
+  <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:px-6 sm:py-4">
     <button
       onClick={() => scrollToId("inicio")}
       className="relative h-10 w-[150px] shrink-0 sm:h-12 sm:w-[190px] md:h-14 md:w-[260px]"
@@ -1103,8 +1103,10 @@ export default function Home() {
   </div>
 </header>
 
-      {/* Anchor */}
-      <div id="inicio" className="scroll-mt-24" />
+  {/* Espaçador do header fixo + Anchor */}
+<div className="h-[64px] sm:h-[72px] md:h-[88px]" />
+<div id="inicio" className="scroll-mt-24" />
+
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
 <section className="w-full bg-[#0B0F1A] overflow-hidden">
   {/* MOBILE */}
