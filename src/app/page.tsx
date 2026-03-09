@@ -1038,7 +1038,7 @@ export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0B0F1A] text-white">
       {/* Header (sticky) */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0B0F1A]/90 backdrop-blur">
+     <header className="sticky top-0 z-50 bg-[#0B0F1A]/90 backdrop-blur border-b border-white/10">
   <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 overflow-hidden px-4 py-3 sm:px-6 sm:py-4">
     <button
       onClick={() => scrollToId("inicio")}
