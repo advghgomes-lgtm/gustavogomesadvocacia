@@ -1355,9 +1355,11 @@ export default function Home() {
             </h2>
 
             <p className="mt-4 text-white/70 leading-relaxed text-justify">
-              Se você está com descontos que não reconhece (consignado, cartão RMC/RCC ou cobranças
-              abusivas), nossa atuação é voltada a cessar a cobrança, recuperar valores e responsabilizar
-              a instituição financeira. Para agilizar, clique no botão e envie seu caso pronto para atendimento.
+              Se você está sofrendo descontos que não reconhece (empréstimo consignado, cartão RMC/RCC 
+              ou outras cobranças abusivas), nossa atuação consiste na análise do caso para buscar a 
+              cessação das cobranças indevidas, eventual restituição de valores e apuração da responsabilidade 
+              da instituição financeira.
+              Caso deseje uma avaliação do seu caso, utilize o o campo abaixo para entrar em contato.
             </p>
           </div>
 
