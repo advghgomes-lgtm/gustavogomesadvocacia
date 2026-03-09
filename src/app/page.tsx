@@ -1233,7 +1233,7 @@ export default function Home() {
                 Dr. Gustavo Gomes
               </h3>
               <p className="mt-2 text-sm text-white/60">
-                Advogado e Administrador • Responsável pelo escritório
+                OAB/SP nº 517.274 • Advogado e Administrador • Responsável pelo escritório
               </p>
 
               <p className="mt-4 text-white/90 text-justify">
@@ -1613,9 +1613,9 @@ export default function Home() {
               </p>
 
               <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-5 max-w-sm">
-                <p className="text-white/85 font-semibold">Plantão Jurídico 24h</p>
+                <p className="text-white/85 font-semibold">Agendar atendimento</p>
                 <p className="mt-1 text-sm text-white/70">
-                  Após 18h, finais de semana e feriados
+                  Atendimentos mediante agendamento, com disponibilidade para demandas urgentes
                 </p>
                 <a
                   href="tel:+5516997434946"
