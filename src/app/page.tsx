@@ -1103,7 +1103,8 @@ export default function Home() {
   </div>
 </header>
 
-{/* Anchor */}
+{/* Espaçador do header fixo + Anchor */}
+<div className="h-[64px] sm:h-[72px] md:h-[88px]" />
 <div id="inicio" className="scroll-mt-24" />
 
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
