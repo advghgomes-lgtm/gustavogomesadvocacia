@@ -1103,8 +1103,7 @@ export default function Home() {
   </div>
 </header>
 
-  {/* Espaçador do header fixo + Anchor */}
-<div className="h-[64px] sm:h-[72px] md:h-[88px]" />
+{/* Anchor */}
 <div id="inicio" className="scroll-mt-24" />
 
 {/* ===== BANNER RESPONSIVO CLOUDINARY (SEM OVERLAY) ===== */}
@@ -1359,7 +1358,7 @@ export default function Home() {
               ou outras cobranças abusivas), nossa atuação consiste na análise do caso para buscar a 
               cessação das cobranças indevidas, eventual restituição de valores e apuração da responsabilidade 
               da instituição financeira.
-              Caso deseje uma avaliação do seu caso, utilize o o campo abaixo para entrar em contato.
+              Caso deseje uma avaliação do seu caso, utilize o campo abaixo para entrar em contato.
             </p>
           </div>
 
